@@ -1,12 +1,15 @@
-#Predicting Housing Prices
+Markdown Live Preview
+Predicting Housing Prices
 
 ----
-## Features of model
-* zip-code
-* number of rooms 
-* number of bathrooms
-* square footage
-* date
+## Features of the model
+* zip-code: zip code of the house
+* bedrooms: number of bedrooms in the house
+* bathrooms: number of bathrooms in the house
+* square footage: total square footage of the house
+* date: date inquiry 
+* year built: the year the house was built
+* floors: number of floors in the house
 
 
 ------
