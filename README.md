@@ -10,6 +10,9 @@ Predicting Housing Prices
 * date: date inquiry 
 * year built: the year the house was built
 * floors: number of floors in the house
+* price: price of the house for sale
+* property type: townhouse, condo, home, etc
+
 
 
 ------
