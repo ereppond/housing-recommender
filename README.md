@@ -16,7 +16,7 @@ Predicting Housing Prices
 
 ### Hopes for future of model
 
-*The goal is to be able to predict up and coming neighborhoods based on the housing prices*
+*The goal is to be able to recommend houses and neighborhoods based on user preferences along with NLP of the housing descriptions that they have already liked. Family type will also be considered when recommending neighborhoods and houses*
 
 ----
 ## Updates
