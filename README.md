@@ -12,8 +12,9 @@ Predicting Housing Prices
 * floors: number of floors in the house
 * price: price of the house for sale
 * property type: townhouse, condo, home, etc
-
-
+* location: neighborhood of house
+* lot-size: size of lot in acres
+* days-on-market: number of days the house has been on the market
 
 ------
 
