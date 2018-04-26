@@ -20,8 +20,8 @@ Predicting Housing Prices
 
 ----
 ## Updates
-* April 18, 2018
+* April 26, 2018
 
 ----
 ### References:
-see [zillow](zillow.com) for reference to data 
+See [redfin](redfin.com) for reference to data 
