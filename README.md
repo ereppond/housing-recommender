@@ -1,5 +1,8 @@
-Markdown Live Preview
 Predicting Housing Prices
+
+> How frustrating is it when you want to look for houses to buy but you aren't sure where to begin. There are so many different factors that go into deciding when, where, and why to buy a house. 
+
+> My goal is to build a recommender system that will hopefully make the process of looking for houses a bit easier. My hope is to use NLP on descriptions of houses you've already liked, along with different circumstances you're in, such as size of family, job location, etc. to help you decide where you should live. 
 
 ----
 ## Features of the model
@@ -20,12 +23,13 @@ Predicting Housing Prices
 
 ### Hopes for future of model
 
-*The goal is to be able to recommend houses and neighborhoods based on user preferences along with NLP of the housing descriptions that they have already liked. Family type will also be considered when recommending neighborhoods and houses*
+*In the future, I plan on building my dataset to reach cities outside of Washington as well as implementing an app to make this process more accessible*
 
 ----
 ## Updates
+* May 7, 2018
 * April 26, 2018
 
 ----
 ### References:
-See [redfin](redfin.com) for reference to data 
+See [Redfin](redfin.com) for reference to data 
