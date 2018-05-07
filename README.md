@@ -28,7 +28,11 @@ Predicting Housing Prices
 ----
 ## Updates
 * May 7, 2018
+	* First Model 
+	* Data Collection
 * April 26, 2018
+	* Repo Created
+	* README Created
 
 ----
 ### References:
