@@ -89,4 +89,4 @@ if __name__ == '__main__':
 	cluster.fit_transform(df.DECS.values)
 	df = cluster.result(df)
 	preds = cluster.predictions(df)
-	return df
+	return preds
