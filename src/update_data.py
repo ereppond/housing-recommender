@@ -8,7 +8,7 @@ import os
 
 class Data_Update:
 
-	def __init__(self, old_data, new_data, sold=None):
+	def __init__(self, old_data, sold=None):
 		'''Initializes the self parameters.
 
 		Params:
@@ -19,19 +19,22 @@ class Data_Update:
 		'''
 
 		self.df_old_data = pd.read_csv(old_data)
-		self.old_data = old_data
 		self.df_new_data = pd.DataFrame()
-		self.new_data = new_data
+		self.df_finalized = pd.DataFrame()
 		self.sold = sold
 
 
 	def collect_new_data(self):
-		'''Calls the webscraper that downloads necessary datasets.'''
+		'''Calls the webscraper that downloads necessary datasets and
+			adds them to dataframe.
+		'''
 		now = now()
 		for idx, zipcode in enumerate(df_old_data['ZIP'].unique()):
 			browser = Chrome()
-			browser.get('https://www.redfin.com/zipcode/{}'.format(zipcode))
-			download_button = browser.find_element_by_css_selector('a#download-and-save')
+			browser.get('https://www.redfin.com/zipcode/{}'.
+				format(zipcode))
+			download_button = browser.find_element_by_css_selector(
+				'a#download-and-save')
 			download_button.click()
 		
 		directory = os.fsencode('/Users/elisereppond/Downloads')
@@ -43,17 +46,25 @@ class Data_Update:
 		        month = '0{}'.format(month)
 		    if day <= 9:
 		        day = '0{}'.format(day)
-		    if filename.startswith('redfin_{}-{}-{}'.format(now.year, month, day)):
+		    if filename.startswith('redfin_{}-{}-{}'.format(now.year, month, 
+		    	day)):
 		        self.df_new_data = pd.concat([self.df_new_data, 
 		        	pd.DataFrame(filename)], axis=0)
-
+		self.df_new_data['DESC'] = pd.Series(dtype=str)
 
 
 	def compare_datasets(self):
-		''' Moves houses to sold when no longer in new_data
-		
+		''' Moves houses to sold when no longer in new_data.
 
 		'''
+		for idx_old, old_row in self.df_old_data.iterrows():
+			for idx_new, new_row in self.df_new_data.iterrows():
+				if old_row['ADDRESS'] == new_row['ADDRESS']:
+					self.df_new_data['DESC'][idx_new] = old_row['DESC']
+
+
+
+
 
 # need to update every couple of days based on zipcodes
 # scrape for new descriptions 
