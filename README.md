@@ -2,7 +2,16 @@ Predicting Housing Prices
 
 > How frustrating is it when you want to look for houses to buy but you aren't sure where to begin. There are so many different factors that go into deciding when, where, and why to buy a house. 
 
-> My goal is to build a recommender system that will hopefully make the process of looking for houses a bit easier. My hope is to use NLP on descriptions of houses you've already liked, along with different circumstances you're in, such as size of family, job location, etc. to help you decide where you should live. 
+> My goal is to build a recommender system that will hopefully make the process of looking for houses a bit easier. My hope is to use NLP on descriptions of houses you've already liked to cluster houses, along with different circumstances you're in, such as size of family, job location, etc. to help you decide where you should live. 
+
+## Information that can be entered:
+* Number of bedrooms
+* Number of bathrooms
+* Desired squarefootage
+* Price range
+* Job location
+* Max distance from job
+* Children?
 
 ----
 ## Features of the model
