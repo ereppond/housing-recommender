@@ -58,12 +58,13 @@ def get_training_data(file, fave_file=None):
 			if row['ADDRESS'] in df_faves['ADDRESS']:
 				row['FAVORITE'] = 'Y'
 	df_all_data.drop(['NEXT OPEN HOUSE DATE', 'NEXT OPEN HOUSE START TIME', 
-		'NEXT OPEN HOUSE END TIME'])
-	return 
+		'NEXT OPEN HOUSE END TIME', 'INTERESTED'], axis=1, inplace=True)
+	df_all_data.rename(columns={'$/SQUARE FEET': 'PRICE/SQUAREFT'})
+	return df_all_data
 
 
 if __name__ == '__main__':
-	df = get_training_data('housing_data.csv', 'favorites.csv')
+	df = get_training_data('housing_data.csv', 'favorites_test.csv')
 	cluster = Clustering()
 	cluster.fit_transform(df.DECS.values)
 	df = cluster.result(df)
