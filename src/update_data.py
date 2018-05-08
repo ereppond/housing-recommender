@@ -47,7 +47,7 @@ class Data_Update:
 		    	day)):
 		        self.df_new_data = pd.concat([self.df_new_data, 
 		        	pd.DataFrame(filename)], axis=0)
-		self.df_new_data['DESC'] = pd.Series(dtype=str)
+		self.df_new_data['DESC'] = ''
 
 
 	def compare_datasets(self):
