@@ -8,20 +8,17 @@ import os
 
 class Data_Update:
 
-	def __init__(self, old_data, sold=None):
+	def __init__(self, old_data):
 		'''Initializes the self parameters.
 
 		Params:
 			old_data (filename): name of csv file for old data
 			new_data (filename): name of csv file for new data
-			sold (filename): name of csv file for sold houses
 
 		'''
 
 		self.df_old_data = pd.read_csv(old_data)
 		self.df_new_data = pd.DataFrame()
-		self.df_finalized = pd.DataFrame()
-		self.sold = sold
 
 
 	def collect_new_data(self):
@@ -63,10 +60,4 @@ class Data_Update:
 					self.df_new_data['DESC'][idx_new] = old_row['DESC']
 
 
-
-
-
-# need to update every couple of days based on zipcodes
-# scrape for new descriptions 
-# move data that is no longer on market to sold database
 # update aws
