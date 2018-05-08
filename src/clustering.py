@@ -9,13 +9,14 @@ class Clustering:
 
 	def __init__(self, n_clusters=30):
 		'''Initializes the TFIDF Vectorizer and KMeans Obj'''
+
 		self.n_clusters = n_clusters
 		self.tfidf = TfidfVectorizer(stop_words='english', max_features=50)
 		self.km = KMeans(n_clusters=30)
 	
 
 	def fit_transform(self, X):
-		'''Fits and transforms TFIDF and fits KMeans
+		'''Fits and transforms TFIDF and fits KMeans.
 		
 		Params:
 			X (array): Array of the descriptions of houses
@@ -27,7 +28,7 @@ class Clustering:
 
 
 	def result(self, df):
-		'''Takes the df and builds a column with the labels for each house
+		'''Takes the df and builds a column with the labels for each house.
 
 		Params:
 			df (DataFrame): dataframe with all the housing data
@@ -37,12 +38,31 @@ class Clustering:
 			df (DataFrame): dataframe including new column for label
 
 		'''
-		df['labels'] = pd.Series(self.km.labels_)
+		df['LABEL'] = pd.Series(self.km.labels_)
 		return df
+
+	def predictions(self, df):
+		'''Returns houses that are in the same clusters as their favorites.
+
+		Params:
+			df (DataFrame): entire dataframe with the favorites and the cluster labels
+
+		Returns:
+			pos (DataFrame): dataframe of houses that have similar descriptions 
+				to those that they favorited
+
+		'''
+		pos = pd.DataFrame()
+		possible_clusters = df[df['FAVORITED'] == 'Y']['LABEL'].unique()
+		for idx, row in df.iterrows():
+			if row['LABEL'] in possible_clusters:
+				pos.append(row)
+		return pos
+
 
 
 def get_training_data(file, fave_file=None):
-	'''Takes in a filename and returns it as a dataframe
+	'''Takes in a filename and returns it as a dataframe.
 
 
 	Params:
