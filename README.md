@@ -6,6 +6,7 @@ Predicting Housing Prices
 
 ## Structure:
 > The website will take your favorited houses as csv format to recommend similar houses that may not be what you had been searching for originally but may be suitable for your circumstances. 
+** NOTE: This can only be used with Redfin's formatted favorited houses as csv. **
 
 ## The way to retrieve your favorited houses in csv format:
 1. Go to your Redfin favorites by clicking [here](https://www.redfin.com/myredfin/favorites).
