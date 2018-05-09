@@ -78,8 +78,6 @@ def get_training_data(file, fave_file=None):
 		for idx, row in df_all_data.iterrows():
 			if row['ADDRESS'] in list(df_faves['ADDRESS']):
 				df_all_data.loc[idx,'FAVORITED'] = 'Y'
-	# df_all_data.drop(['NEXT OPEN HOUSE DATE', 'NEXT OPEN HOUSE START TIME', 
-	# 	'NEXT OPEN HOUSE END TIME', 'INTERESTED'], axis=1, inplace=True)
 	df_all_data.rename(columns={'$/SQUARE FEET': 'PRICE/SQUAREFT'})
 	df_all_data['DESC'] = df_all_data['DESC'].fillna('')
 	return df_all_data
