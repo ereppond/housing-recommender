@@ -1,8 +1,6 @@
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
-import numpy as np
-# import pymongo
 
 
 class Clustering:
@@ -52,12 +50,12 @@ class Clustering:
 				to those that they favorited
 
 		'''
-		pos = pd.DataFrame()
+		list_of_rows = []
 		possible_clusters = df[df['FAVORITED'] == 'Y']['LABEL'].unique()
 		for idx, row in df.iterrows():
-			if row['LABEL'] in possible_clusters:
-				pos = pd.concat([pos, row])
-		return pos
+			if row['LABEL'] in possible_clusters and row['FAVORITED'] == 'N':
+				list_of_rows.append(row)
+		return pd.concat(list_of_rows, ignore_index=True)
 
 
 
@@ -79,14 +77,17 @@ def get_training_data(file, fave_file=None):
 			if row['ADDRESS'] in list(df_faves['ADDRESS']):
 				df_all_data.loc[idx,'FAVORITED'] = 'Y'
 	df_all_data.rename(columns={'$/SQUARE FEET': 'PRICE/SQUAREFT'})
-	df_all_data['DESC'] = df_all_data['DESC'].fillna('')
+	df_all_data['DESC'] = df_all_data['DESC'].fillna('No Description')
+	df_all_data = df_all_data.fillna('None')
+	if 'Unnamed: 0' in df_all_data.columns:
+		df_all_data.drop('Unnamed: 0', inplace=True, axis=1)
 	return df_all_data
 
 
 if __name__ == '__main__':
-	df = get_training_data('../../data-housing/first_dataset.csv', '../favorites_test.csv')
+	df = get_training_data('../data/housing-data.csv', '../data/favorites_test.csv')
 	cluster = Clustering()
 	cluster.fit_transform(df.DESC.values)
 	df = cluster.result(df)
 	preds = cluster.predictions(df)
-	print(preds)
+	print(preds.T)
