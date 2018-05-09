@@ -46,14 +46,21 @@ Predicting Housing Prices
 
 ----
 ## Updates
+* May 9, 2018
+	* 
 * May 8, 2018
-	*
+	* Created src directory (contains python files)
+		* clustering.py (python file for clustering houses)
+		* update_data.py (python file for updating the data)
+	* Created notebooks directory (contains jupyter notebooks for EDA and webscraping)
+		* EDA.ipynb
+		* scraping-descriptions.ipynb
 * May 7, 2018
-	* First Model 
-	* Data Collection
+	* First model 
+	* Data collection
 * April 26, 2018
-	* Repo Created
-	* README.md Created
+	* Repo created
+	* README.md created
 
 ----
 ### References:
