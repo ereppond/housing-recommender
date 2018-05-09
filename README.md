@@ -2,21 +2,22 @@ Predicting Housing Prices
 
 > How frustrating is it when you want to look for houses to buy but you aren't sure where to begin. There are so many different factors that go into deciding when, where, and why to buy a house. 
 
-> My goal is to build a recommender system that will hopefully make the process of looking for houses a bit easier. My hope is to use NLP on descriptions of houses you've already liked to cluster houses, along with different circumstances you're in, such as size of family, job location, etc. to help you decide where you should live. 
+> My goal is to build a recommender system that will hopefully make the process of looking for houses a bit easier. My hope is to use NLP on descriptions of houses you've already liked to cluster houses, along with different circumstances you're in, such as the size of family, job location, etc. to help you decide where you should live. 
 
 ## Structure:
 > The website will take your favorited houses as csv format to recommend similar houses that may not be what you had been searching for originally but may be suitable for your circumstances. 
+
 ** NOTE: This can only be used with Redfin's formatted favorited houses as csv. **
 
 ## The way to retrieve your favorited houses in csv format:
 1. Go to your Redfin favorites by clicking [here](https://www.redfin.com/myredfin/favorites).
 2. Click on the 'Download' button that is to the left of the 'Map Homes' button.
-3. Upload favorited houses as csv to website.
+3. Upload favorited houses as csv to the website.
 
 ## Information that can be entered:
 * Number of bedrooms
 * Number of bathrooms
-* Desired squarefootage
+* Desired square footage
 * Price range
 * Job location
 * Max distance from job
@@ -31,10 +32,10 @@ Predicting Housing Prices
 * date: date inquiry 
 * year built: the year the house was built
 * floors: number of floors in the house
-* price: price of the house for sale
+* price: the price of the house for sale
 * property type: townhouse, condo, home, etc
-* location: neighborhood of house
-* lot-size: size of lot in acres
+* location: the neighborhood of the house
+* lot-size: size of the lot in acres
 * days-on-market: number of days the house has been on the market
 
 ------
@@ -45,13 +46,15 @@ Predicting Housing Prices
 
 ----
 ## Updates
+* May 8, 2018
+	*
 * May 7, 2018
 	* First Model 
 	* Data Collection
 * April 26, 2018
 	* Repo Created
-	* README Created
+	* README.md Created
 
 ----
 ### References:
-See [Redfin](redfin.com) for reference to data 
+See [Redfin](redfin.com) for reference to the data.
