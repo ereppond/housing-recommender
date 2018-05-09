@@ -8,8 +8,9 @@ Predicting Housing Prices
 > The website will take your favorited houses as csv format to recommend similar houses that may not be what you had been searching for originally but may be suitable for your circumstances. 
 
 ## The way to retrieve your favorited houses in csv format:
-1. Go to your Redfin favorites by clicking [here](https://www.redfin.com/myredfin/favorites)
-2.  
+1. Go to your Redfin favorites by clicking [here](https://www.redfin.com/myredfin/favorites).
+2. Click on the 'Download' button that is to the left of the 'Map Homes' button.
+3. Upload favorited houses as csv to website.
 
 ## Information that can be entered:
 * Number of bedrooms
