@@ -23,7 +23,7 @@ class Clustering:
 
 		'''
 		self.tfidf.fit(X)
-		desc_tfidf = tfidf.transform(X)
+		desc_tfidf = self.tfidf.transform(X)
 		self.km.fit(desc_tfidf.todense())
 
 
@@ -56,7 +56,7 @@ class Clustering:
 		possible_clusters = df[df['FAVORITED'] == 'Y']['LABEL'].unique()
 		for idx, row in df.iterrows():
 			if row['LABEL'] in possible_clusters:
-				pos.append(row)
+				pos = pd.concat([pos, row])
 		return pos
 
 
@@ -72,21 +72,23 @@ def get_training_data(file, fave_file=None):
 		df (DataFrame): pandas dataframe of data from file
 	'''
 	df_all_data = pd.read_csv(file)
+	df_all_data['FAVORITED'] = 'N'
 	if fave_file != None:
 		df_faves = pd.read_csv(fave_file)
 		for idx, row in df_all_data.iterrows():
-			if row['ADDRESS'] in df_faves['ADDRESS']:
-				row['FAVORITE'] = 'Y'
-	df_all_data.drop(['NEXT OPEN HOUSE DATE', 'NEXT OPEN HOUSE START TIME', 
-		'NEXT OPEN HOUSE END TIME', 'INTERESTED'], axis=1, inplace=True)
+			if row['ADDRESS'] in list(df_faves['ADDRESS']):
+				df_all_data.loc[idx,'FAVORITED'] = 'Y'
+	# df_all_data.drop(['NEXT OPEN HOUSE DATE', 'NEXT OPEN HOUSE START TIME', 
+	# 	'NEXT OPEN HOUSE END TIME', 'INTERESTED'], axis=1, inplace=True)
 	df_all_data.rename(columns={'$/SQUARE FEET': 'PRICE/SQUAREFT'})
+	df_all_data['DESC'] = df_all_data['DESC'].fillna('')
 	return df_all_data
 
 
 if __name__ == '__main__':
-	df = get_training_data('housing_data.csv', 'favorites_test.csv')
+	df = get_training_data('../../data-housing/first_dataset.csv', '../favorites_test.csv')
 	cluster = Clustering()
-	cluster.fit_transform(df.DECS.values)
+	cluster.fit_transform(df.DESC.values)
 	df = cluster.result(df)
 	preds = cluster.predictions(df)
-	return preds
+	print(preds)
