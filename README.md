@@ -4,6 +4,13 @@ Predicting Housing Prices
 
 > My goal is to build a recommender system that will hopefully make the process of looking for houses a bit easier. My hope is to use NLP on descriptions of houses you've already liked to cluster houses, along with different circumstances you're in, such as size of family, job location, etc. to help you decide where you should live. 
 
+## Structure:
+> The website will take your favorited houses as csv format to recommend similar houses that may not be what you had been searching for originally but may be suitable for your circumstances. 
+
+## The way to retrieve your favorited houses in csv format:
+1. Go to your Redfin favorites by clicking [here](https://www.redfin.com/myredfin/favorites)
+2.  
+
 ## Information that can be entered:
 * Number of bedrooms
 * Number of bathrooms
@@ -14,7 +21,7 @@ Predicting Housing Prices
 * Children?
 
 ----
-## Features of the model
+## Features of the model:
 * zip-code: zip code of the house
 * bedrooms: number of bedrooms in the house
 * bathrooms: number of bathrooms in the house
