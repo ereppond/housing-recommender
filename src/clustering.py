@@ -1,17 +1,18 @@
+import pandas as pd
+
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
-import pandas as pd
+
 
 
 class Clustering:
-
-	def __init__(self, n_clusters=30):
+	def __init__(self, n_clusters=60):
 		'''Initializes the TFIDF Vectorizer and KMeans Obj'''
 
 		self.n_clusters = n_clusters
-		self.tfidf = TfidfVectorizer(stop_words='english', max_features=50)
-		self.km = KMeans(n_clusters=30)
-	
+		self.tfidf = TfidfVectorizer(stop_words='english', max_features=1000)
+		# self.km = KMeans(n_clusters=self.n_clusters)
+
 
 	def fit_transform(self, X):
 		'''Fits and transforms TFIDF and fits KMeans.
@@ -22,7 +23,9 @@ class Clustering:
 		'''
 		self.tfidf.fit(X)
 		desc_tfidf = self.tfidf.transform(X)
-		self.km.fit(desc_tfidf.todense())
+		return desc_tfidf
+		# print(desc_tfidf.shape)
+		# self.km.fit(desc_tfidf.todense())
 
 
 	def result(self, df):
@@ -55,11 +58,11 @@ class Clustering:
 		for idx, row in df.iterrows():
 			if row['LABEL'] in possible_clusters and row['FAVORITED'] == 'N':
 				list_of_rows.append(row)
-		return pd.concat(list_of_rows, ignore_index=True)
+		return pd.concat(list_of_rows)
 
 
 
-def get_training_data(file, fave_file=None):
+def get_data(file, fave_file=None):
 	'''Takes in a filename and returns it as a dataframe.
 
 
@@ -69,25 +72,26 @@ def get_training_data(file, fave_file=None):
 	Returns:
 		df (DataFrame): pandas dataframe of data from file
 	'''
-	df_all_data = pd.read_csv(file)
-	df_all_data['FAVORITED'] = 'N'
+	df = pd.read_csv(file)
+	df['FAVORITE'] = 'N'
 	if fave_file != None:
 		df_faves = pd.read_csv(fave_file)
-		for idx, row in df_all_data.iterrows():
+		for idx, row in df.iterrows():
 			if row['ADDRESS'] in list(df_faves['ADDRESS']):
-				df_all_data.loc[idx,'FAVORITED'] = 'Y'
-	df_all_data.rename(columns={'$/SQUARE FEET': 'PRICE/SQUAREFT'})
-	df_all_data['DESC'] = df_all_data['DESC'].fillna('No Description')
-	df_all_data = df_all_data.fillna('None')
-	if 'Unnamed: 0' in df_all_data.columns:
-		df_all_data.drop('Unnamed: 0', inplace=True, axis=1)
-	return df_all_data
+				df.loc[idx,'FAVORITE'] = df['FAVORITE'].max() + 1
+	df['DESC'] = df['DESC'].fillna('No Description')
+	df = df.fillna(0)
+	if 'Unnamed: 0' in df.columns:
+		df.drop('Unnamed: 0', inplace=True, axis=1)
+	df.drop_duplicates(inplace=True)
+	return df
 
 
 if __name__ == '__main__':
-	df = get_training_data('../data/housing-data.csv', '../data/favorites_test.csv')
+	df = get_data('../data/housing-data.csv', '../data/favorites_test.csv')
 	cluster = Clustering()
 	cluster.fit_transform(df.DESC.values)
+	print(df.shape)
 	df = cluster.result(df)
 	preds = cluster.predictions(df)
-	print(preds.T)
+	print(preds['ADDRESS'])
