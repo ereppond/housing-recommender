@@ -54,17 +54,20 @@ class Data_Update:
 		directory = os.fsencode('/Users/elisereppond/Downloads')
 		for file in os.listdir(directory):
 			filename = os.fsdecode(file)
-			month = 5
-			day = 9
+			month = now.month
+			day = now.day
 			if month <= 9:
 				month = '0{}'.format(month)
 			if day <= 9:
 				day = '0{}'.format(day)
-			if filename.startswith('redfin_{}-{}-{}'.format(now.year, month, 
-				day)):
+			if filename.startswith('redfin_{}-{}-{}'.format(now.year, 5, 
+				9)):
 				list_of_files.append(pd.read_csv('/Users/elisereppond/Downloads/{}'.\
 					format(filename)))
-		self.df_new_data = pd.concat(list_of_files)
+		try: 
+			self.df_new_data = pd.concat(list_of_files)
+		except ValueError:
+			self.df_new_data = self.df_old_data
 		self.df_new_data = self.clean_data()
 
 
@@ -83,6 +86,7 @@ class Data_Update:
 			else 0)
 		self.df_new_data.drop(self.df_new_data[self.df_new_data['STATE']
 			!= 'WA'].index, inplace=True)
+		self.df_new_data['LABEL'] = 0
 		# self.df_new_data.drop(['SOLD DATE', ])
 		return self.df_new_data	
 
@@ -119,8 +123,9 @@ class Data_Update:
 		''' Replaces the old csv files with the updated ones.'''
 
 		self.df_new_data['LABEL'] = 0
-		self.df_new_data = pd.concat([self.df_old_data, self.df_recent, 
+		self.df_old_data = pd.concat([self.df_old_data, self.df_recent, 
 			self.df_new_data]).drop_duplicates(axis=0)
+		self.df_old_data['ID'] = self.df_old_data.index
 		self.df_new_data['ID'] = self.df_new_data.index
 		self.df_old_data.to_csv('../data/old_data.csv')
 		self.df_new_data.to_csv('../data/housing-data-new-test.csv')
