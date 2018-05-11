@@ -121,6 +121,7 @@ class Data_Update:
 		self.df_new_data['LABEL'] = 0
 		self.df_new_data = pd.concat([self.df_old_data, self.df_recent, 
 			self.df_new_data]).drop_duplicates(axis=0)
+		self.df_new_data['ID'] = self.df_new_data.index
 		self.df_old_data.to_csv('../data/old_data.csv')
 		self.df_new_data.to_csv('../data/housing-data-new-test.csv')
 
