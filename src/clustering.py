@@ -72,6 +72,7 @@ def get_data(file, fave_file=None):
 	Returns:
 		df (DataFrame): pandas dataframe of data from file
 	'''
+	
 	df = pd.read_csv(file)
 	df['FAVORITE'] = 'N'
 	if fave_file != None:
@@ -85,6 +86,7 @@ def get_data(file, fave_file=None):
 		df.drop('Unnamed: 0', inplace=True, axis=1)
 	df.drop_duplicates(inplace=True)
 	return df
+
 
 
 if __name__ == '__main__':
