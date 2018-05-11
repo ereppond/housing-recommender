@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from users import build_user_matrix
 
 class Recommending:
 	def __init__(self, n_clusters=30):
@@ -123,6 +124,7 @@ def get_data(file, fave_file=None):
 		for idx, row in df.iterrows():
 			if row['ADDRESS'] in list(df_faves['ADDRESS']):
 				df.loc[idx,'FAVORITE'] = 'Y'
+		# build_user_matrix(df, fave_file)
 	df['DESC'] = df['DESC'].fillna('No Description')
 	df = df.fillna(0)
 	if 'Unnamed: 0' in df.columns:
