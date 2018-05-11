@@ -46,8 +46,14 @@ Predicting Housing Prices
 
 ----
 ## Updates
+
+* May 10, 2018
+	* Built baseline recommender based on users favorited houses
+	* Began building deployment(html)
+
 * May 9, 2018
-	* 
+	* Debugged clustering.py and update_data.py
+
 * May 8, 2018
 	* Created src directory (contains python files)
 		* clustering.py (python file for clustering houses)
@@ -55,9 +61,11 @@ Predicting Housing Prices
 	* Created notebooks directory (contains jupyter notebooks for EDA and webscraping)
 		* EDA.ipynb
 		* scraping-descriptions.ipynb
+
 * May 7, 2018
 	* First model 
 	* Data collection
+
 * April 26, 2018
 	* Repo created
 	* README.md created
