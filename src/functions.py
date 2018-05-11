@@ -7,6 +7,9 @@ def build_user_matrix(users, new_user):
     Params:
         users (file): existing file for the users data
         new_user (file): df with favorited col updated for user
+
+    Returns:
+        users (dataframe): dataframe updated with new users
     '''
     users = pd.read_csv(users)
     df = get_data('../data/housing-data.csv', new_user)
