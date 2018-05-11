@@ -11,6 +11,7 @@ def build_user_matrix(df=None, new_user):
     Returns:
         users (DataFrame): pandas df of updated users
     '''
+    
     users = pd.read_csv('../data/users.csv')
     if df == None:
         df = get_data('../data/housing-data.csv', new_user)
