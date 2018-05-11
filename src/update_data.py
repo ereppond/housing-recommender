@@ -64,7 +64,6 @@ class Data_Update:
 				day)):
 				list_of_files.append(pd.read_csv('/Users/elisereppond/Downloads/{}'.\
 					format(filename)))
-				print(filename)
 		self.df_new_data = pd.concat(list_of_files)
 		self.df_new_data = self.clean_data()
 
@@ -79,10 +78,11 @@ class Data_Update:
 			{'URL (SEE http://www.redfin.com/buy-a-home/comparative-market-analysis FOR INFO ON PRICING)': 
 			'URL', 
 			'$/SQUARE FEET': 'PRICE/SQUAREFT'})
-		df['SALE TYPE'] = df['SALE TYPE'].apply(lambda x: 1 if x == 'MLS Listing' or 
-			x == 'For-Sale-by-Owner Listing' else 0)
-		self.df_new_data.drop(self.df_new_data[self.df_new_data['STATE'] != 'WA'].index, 
-			inplace=True)
+		self.df_new_data['SALE TYPE'] = self.df_new_data['SALE TYPE'].apply(
+			lambda x: 1 if x == 'MLS Listing' or x == 'For-Sale-by-Owner Listing' 
+			else 0)
+		self.df_new_data.drop(self.df_new_data[self.df_new_data['STATE']
+			!= 'WA'].index, inplace=True)
 		# self.df_new_data.drop(['SOLD DATE', ])
 		return self.df_new_data	
 
@@ -118,7 +118,8 @@ class Data_Update:
 	def replace_old_csv(self):
 		''' Replaces the old csv files with the updated ones.'''
 
-		self.df_new_data = pd.concat([self.df_old_data, self.df_recent,
+		self.df_new_data['LABEL'] = 0
+		self.df_new_data = pd.concat([self.df_old_data, self.df_recent, 
 			self.df_new_data]).drop_duplicates(axis=0)
 		self.df_old_data.to_csv('../data/old_data.csv')
 		self.df_new_data.to_csv('../data/housing-data-new-test.csv')
