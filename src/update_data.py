@@ -14,8 +14,8 @@ class Data_Update:
 		Params:
 			old_data (filename): name of csv file for old data
 			new_data (filename): name of csv file for new data
-
 		'''
+		
 		self.df_old_data = pd.read_csv(old_data)
 		self.df_old_data = self.df_old_data.rename(columns=
 			{'URL (SEE http://www.redfin.com/buy-a-home/comparative-\
