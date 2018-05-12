@@ -18,8 +18,8 @@ class Recommending:
 
 		Params:
 			X (array): Array of the descriptions of houses
-
 		'''
+		
 		self.tfidf.fit(X)
 		desc_tfidf = self.tfidf.transform(X)
 		self.km.fit(desc_tfidf.todense())
@@ -79,12 +79,11 @@ class Recommending:
 
 		Params:
 			df (DataFrame): dataframe with all the housing data
-
 		
 		Returns:
 			df (DataFrame): dataframe including new column for label
-
 		'''
+
 		df['LABEL'] = pd.Series(self.km.labels_)
 		return df
 
@@ -97,8 +96,8 @@ class Recommending:
 		Returns:
 			pos (DataFrame): dataframe of houses that have similar descriptions 
 				to those that they favorited
-
 		'''
+
 		list_of_rows = []
 		possible_clusters = df[df['FAVORITE'] == 'Y']['LABEL'].unique()
 		for idx, row in df.iterrows():
@@ -108,7 +107,6 @@ class Recommending:
 
 def get_data(file, fave_file=None):
 	'''Takes in a filename and returns it as a dataframe.
-
 
 	Params:
 		file (csv): file in csv format
