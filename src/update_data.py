@@ -9,7 +9,7 @@ import random
 
 class Data_Update:
 
-	def __init__(self, recent_data, old_data):
+	def __init__(self, old_data):
 		'''Initializes the self parameters.
 
 		Params:
@@ -21,10 +21,6 @@ class Data_Update:
 		self.df_old_data = self.df_old_data.rename(columns=
 			{'URL (SEE http://www.redfin.com/buy-a-home/comparative-\
 			market-analysis FOR INFO ON PRICING)': 'URL'})
-		self.df_recent = pd.read_csv(recent_data)
-		self.df_recent = self.df_recent.rename(columns=
-			{'URL (SEE http://www.redfin.com/buy-a-home/comparative-\
-			market-analysis FOR INFO ON PRICING)': 'URL'})
 		self.df_new_data = pd.DataFrame()
 
 
@@ -33,7 +29,7 @@ class Data_Update:
 		'''
 
 		browser = Chrome()
-		for idx, zipcode in enumerate(self.df_recent['ZIP'].unique()):
+		for idx, zipcode in enumerate(self.df_old_data['ZIP'].unique()):
 			try:
 				browser.get('https://www.redfin.com/zipcode/{}'.
 					format(zipcode))
@@ -97,7 +93,7 @@ class Data_Update:
 		old data where the address is the same.
 		'''
 
-		for idx_old, old_row in self.df_recent.iterrows():
+		for idx_old, old_row in self.df_old_data.iterrows():
 			for idx_new, new_row in self.df_new_data.iterrows():
 				if old_row['ADDRESS'] == new_row['ADDRESS']:                    
 					self.df_new_data.loc[idx_new,'DESC'] = old_row['DESC']
@@ -123,7 +119,7 @@ class Data_Update:
 		''' Replaces the old csv files with the updated ones.'''
 
 		self.df_new_data['LABEL'] = 0
-		self.df_old_data = pd.concat([self.df_old_data, self.df_recent, 
+		self.df_old_data = pd.concat([self.df_old_data,
 			self.df_new_data]).drop_duplicates(axis=0)
 		self.df_old_data['ID'] = self.df_old_data.index
 		self.df_new_data['ID'] = self.df_new_data.index
