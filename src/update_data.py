@@ -1,10 +1,9 @@
-import pymongo
-import pandas as pd
-from selenium.webdriver import Chrome
-from datetime import datetime
 import os
 import time
 import random
+import pandas as pd
+from selenium.webdriver import Chrome
+from datetime import datetime
 
 
 class Data_Update:
@@ -83,9 +82,6 @@ class Data_Update:
 		self.df_new_data.drop(self.df_new_data[self.df_new_data['STATE']
 			!= 'WA'].index, inplace=True)
 		self.df_new_data['LABEL'] = 0
-		# self.df_new_data.drop(['SOLD DATE', ])
-		return self.df_new_data	
-
 
 
 	def compare_datasets(self):
@@ -128,7 +124,7 @@ class Data_Update:
 
 
 if __name__ == '__main__':
-	update = Data_Update('../data/old_data.csv', '../data/housing-data.csv')
+	update = Data_Update('../data/old_data.csv')
 	# update.collect_new_data()
 	update.collecting_files()
 	update.compare_datasets()
