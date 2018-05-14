@@ -15,7 +15,7 @@ class Data_Update:
 			old_data (filename): name of csv file for old data
 			new_data (filename): name of csv file for new data
 		'''
-		
+
 		self.df_old_data = pd.read_csv(old_data)
 		self.df_old_data = self.df_old_data.rename(columns=
 			{'URL (SEE http://www.redfin.com/buy-a-home/comparative-\
@@ -49,14 +49,14 @@ class Data_Update:
 		directory = os.fsencode('/Users/elisereppond/Downloads')
 		for file in os.listdir(directory):
 			filename = os.fsdecode(file)
-			month = now.month
-			day = now.day
+			month = 5
+			day = 9
 			if month <= 9:
 				month = '0{}'.format(month)
 			if day <= 9:
 				day = '0{}'.format(day)
-			if filename.startswith('redfin_{}-{}-{}'.format(now.year, 5, 
-				9)):
+			if filename.startswith('redfin_{}-{}-{}'.format(now.year, 
+				month, day)):
 				list_of_files.append(pd.read_csv('/Users/elisereppond/Downloads/{}'.\
 					format(filename)))
 		try: 
@@ -82,6 +82,7 @@ class Data_Update:
 		self.df_new_data.drop(self.df_new_data[self.df_new_data['STATE']
 			!= 'WA'].index, inplace=True)
 		self.df_new_data['LABEL'] = 0
+		return self.df_new_data
 
 
 	def compare_datasets(self):
@@ -116,15 +117,15 @@ class Data_Update:
 
 		self.df_new_data['LABEL'] = 0
 		self.df_old_data = pd.concat([self.df_old_data,
-			self.df_new_data]).drop_duplicates(axis=0)
-		self.df_old_data['ID'] = self.df_old_data.index
-		self.df_new_data['ID'] = self.df_new_data.index
+			self.df_new_data]).drop_duplicates()
+		# self.df_old_data['ID'] = self.df_old_data.index
+		# self.df_new_data['ID'] = self.df_new_data.index
 		self.df_old_data.to_csv('../data/old_data.csv')
 		self.df_new_data.to_csv('../data/housing-data-new-test.csv')
 
 
 if __name__ == '__main__':
-	update = Data_Update('../data/old_data.csv')
+	update = Data_Update('../data/housing-data.csv')
 	# update.collect_new_data()
 	update.collecting_files()
 	update.compare_datasets()
