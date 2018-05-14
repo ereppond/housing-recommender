@@ -29,7 +29,7 @@ class Recommending:
 		desc_tfidf = self.tfidf.transform(X)
 		self.km.fit(desc_tfidf.todense())
 		tfidf_matrix = pd.concat([pd.DataFrame(tfidf.todense()),
-                          df['PRICE'] / 1000], axis=1)
+                          df['PRICE'] / 1000, df['BEDS']], axis=1)
 		return tfidf_matrix
 
 	def cosine_sim(self, tfidf):
