@@ -13,11 +13,16 @@ class Recommending:
 		self.km = KMeans(n_clusters=self.n_clusters)
 		self.results = {}
 
-	def fit_transform(self, X):
+	def fit_transform(self, X, df):
 		'''Fits and transforms TFIDF and fits KMeans.
 
 		Params:
 			X (array): Array of the descriptions of houses
+			df (DataFrame): dataframe of numerical values to add
+
+		Returns:
+			tfidf_matrix (array): matrix with words, 
+				price, and beds as features
 		'''
 		
 		self.tfidf.fit(X)
