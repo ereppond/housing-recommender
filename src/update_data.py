@@ -95,8 +95,7 @@ class Data_Update:
 		for idx_new, new_row in self.df_new_data.iterrows():
 			if str(new_row['ADDRESS']) in np.array(self.df_old_data['ADDRESS']):
 				ind = self.df_old_data.index[self.df_old_data['ADDRESS'] == str(new_row['ADDRESS'])].tolist()
-				for i in ind:
-					self.df_new_data.loc[idx_new,'DESC'] = self.df_old_data.loc[i, 'DESC']
+				self.df_new_data.loc[idx_new,'DESC'] = self.df_old_data.loc[ind[0], 'DESC']
 
 
 	def scraping_desc(self):
