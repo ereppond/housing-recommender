@@ -128,7 +128,15 @@ def get_data(file, fave_file=None):
 	if 'Unnamed: 0' in df.columns:
 		df.drop('Unnamed: 0', inplace=True, axis=1)
 	df.drop_duplicates(inplace=True)
-	df['ID'] = df.index
+	for idx, row in df.iterrows():
+	    if row['Vacant Land'] == 1 and str(row['BEDS']) == 'NaN':
+	        df.loc[idx, 'BEDS'] = 0
+	        df.loc[idx, 'BATHS'] = 0
+	        df.loc[idx, 'SQUARE FEET'] = 0
+	        df.loc[idx, '$/SQUARE FEET'] = 0
+	for col in df_only_num.columns:
+    	df[col].fillna(df[col].mean())
+    df['PRICE'] = df['PRICE'].dropna(axis=0)
 	return df
 
 
