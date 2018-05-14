@@ -103,19 +103,23 @@ class Data_Update:
 		added to data.
 		'''
 
-		browser = Chrome()
-		for idx, row in self.df_new_data.iterrows():
-			desc = str(row['DESC'])
-			length = len(desc)
-			if length < 15:
-				url = row['URL']
-				try:
-					browser.get(url)
-					sel = "div.sectionContent"
-					description = browser.find_elements_by_css_selector(sel)
-					self.df_new_data.loc[idx,'DESC'] = description
-				except:
-					self.df_new_data.loc[idx,'DESC'] = 'No Description'
+        while len(self.df_new_data[self.df_new_data['DESC'] == 
+        	'No Description']) > 50:
+            browser = Chrome()
+            for idx, row in self.df_new_data.iterrows():
+                if (str(row['DESC']) == 'No Description') or (str(row['DESC']) == 
+                	'NaN'):
+                    url = row['URL']
+                    try:
+                        browser.get(url)
+                        sel = "div.sectionContent"
+                        description = browser.find_elements_by_css_selector(sel)
+                        self.df_new_data.loc[idx,'DESC'] = description[0].text
+                        time.sleep(2 + random.random() * 3)
+                    except IndexError:
+                        self.df_new_data.loc[idx,'DESC'] = 'No Description'
+                    except: 
+                        pass
 
 	def replace_old_csv(self):
 		''' Replaces the old csv files with the updated ones.'''
