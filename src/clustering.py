@@ -23,7 +23,9 @@ class Recommending:
 		self.tfidf.fit(X)
 		desc_tfidf = self.tfidf.transform(X)
 		self.km.fit(desc_tfidf.todense())
-		return desc_tfidf
+		tfidf_matrix = pd.concat([pd.DataFrame(tfidf.todense()),
+                          df['PRICE'] / 1000], axis=1)
+		return tfidf_matrix
 
 	def cosine_sim(self, tfidf):
 		''' Creates a dictionary of the houses to consider based on cosine similarity.
