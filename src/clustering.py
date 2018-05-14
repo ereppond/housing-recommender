@@ -25,7 +25,7 @@ class Recommending:
 		self.km.fit(desc_tfidf.todense())
 		return desc_tfidf
 
-	def cosine_sim(self,tfidf):
+	def cosine_sim(self, tfidf):
 		''' Creates a dictionary of the houses to consider based on cosine similarity.
 		
 		Params:
@@ -71,8 +71,6 @@ class Recommending:
 		'''
 		
 		return df.loc[df.index == id]['ADDRESS'].tolist()[0]
-
-
 
 	def result(self, df):
 		'''Takes the df and builds a column with the labels for each house.
