@@ -92,7 +92,9 @@ class Data_Update:
 
 		for idx_old, old_row in self.df_old_data.iterrows():
 			for idx_new, new_row in self.df_new_data.iterrows():
-				if old_row['ADDRESS'] == new_row['ADDRESS']:                    
+				if (old_row['ADDRESS'] == new_row['ADDRESS'] and 
+					old_row['DESC'] not in self.df_new_data['DESC']): 
+					print('adding existing desc')                   
 					self.df_new_data.loc[idx_new,'DESC'] = old_row['DESC']
 
 
@@ -102,7 +104,7 @@ class Data_Update:
 		'''
 
 		for idx, row in self.df_new_data.iterrows():
-			if row['DESC'] == 'No Description':
+			if len(row['DESC']) < 16:
 				url = row['URL']
 				try:
 					browser.get(url)
