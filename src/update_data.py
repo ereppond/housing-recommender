@@ -44,14 +44,15 @@ class Data_Update:
 		''' Collects the files from the Downloads folder and adds 
 		them to the dataframe.
 		'''
+
 		print('collecting files')
 		now = datetime.now()
 		list_of_files = []
 		directory = os.fsencode('/Users/elisereppond/Downloads')
 		for file in os.listdir(directory):
 			filename = os.fsdecode(file)
-			month = 5
-			day = 9
+			month = now.month
+			day = now.day
 			if month <= 9:
 				month = '0{}'.format(month)
 			if day <= 9:
@@ -61,7 +62,7 @@ class Data_Update:
 				list_of_files.append(pd.read_csv('/Users/elisereppond/Downloads/{}'.\
 					format(filename)))
 		try: 
-			self.df_new_data = pd.concat(list_of_files)
+			self.df_new_data = pd.concat(list_of_files, axis=0)
 			print('concatinated files')
 		except ValueError:
 			self.df_new_data = self.df_old_data
@@ -74,6 +75,7 @@ class Data_Update:
 		''' Cleans the data to match the proper format necessary for 
 		modeling.
 		'''
+
 		print('cleaning')
 		self.df_new_data['DESC'] = 'No Description'
 		self.df_new_data = self.df_new_data.rename(columns=
@@ -98,8 +100,8 @@ class Data_Update:
 			if str(new_row['ADDRESS']) in np.array(self.df_old_data['ADDRESS']):
 				ind = self.df_old_data.index[self.df_old_data['ADDRESS'] == str(new_row['ADDRESS'])].tolist()
 				self.df_new_data.loc[idx_new,'DESC'] = self.df_old_data.loc[ind[0], 'DESC']
-				if idx % 100 == 0:
-					print('comparing datasets on line {} / {}'.format(idx, self.df_new_data.shape[0]))
+				if idx_new % 100 == 0:
+					print('comparing datasets on line {} / {}'.format(idx_new, self.df_new_data.shape[0]))
 
 
 	def scraping_desc(self):
@@ -108,7 +110,7 @@ class Data_Update:
 		'''
 
 		i = 0
-		while len(self.df_new_data[self.df_new_data['DESC'] == 'No Description']) > 50 or i < 20:
+		while len(self.df_new_data[self.df_new_data['DESC'] == 'No Description']) > 50 and i < 20:
 			i += 1
 			print(len(self.df_new_data[self.df_new_data['DESC'] == 'No Description']))
 			browser = Chrome()
@@ -145,7 +147,7 @@ class Data_Update:
 
 if __name__ == '__main__':
 	update = Data_Update('../data/housing-data.csv')
-	update.collect_new_data()
+	# update.collect_new_data()
 	update.collecting_files()
 	update.compare_datasets()
 	update.scraping_desc()
