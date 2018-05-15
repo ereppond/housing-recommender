@@ -44,7 +44,7 @@ class Data_Update:
 		''' Collects the files from the Downloads folder and adds 
 		them to the dataframe.
 		'''
-
+		print('collecting files')
 		now = datetime.now()
 		list_of_files = []
 		directory = os.fsencode('/Users/elisereppond/Downloads')
@@ -62,8 +62,10 @@ class Data_Update:
 					format(filename)))
 		try: 
 			self.df_new_data = pd.concat(list_of_files)
+			print('concatinated files')
 		except ValueError:
 			self.df_new_data = self.df_old_data
+			print('COULD NOT CONCATINATE FILES')
 		self.df_new_data = self.clean_data()
 		self.df_new_data = self.df_new_data.reset_index().drop('index', axis=1)
 
@@ -72,7 +74,7 @@ class Data_Update:
 		''' Cleans the data to match the proper format necessary for 
 		modeling.
 		'''
-
+		print('cleaning')
 		self.df_new_data['DESC'] = 'No Description'
 		self.df_new_data = self.df_new_data.rename(columns=
 			{'URL (SEE http://www.redfin.com/buy-a-home/comparative-market-analysis FOR INFO ON PRICING)': 
@@ -96,6 +98,8 @@ class Data_Update:
 			if str(new_row['ADDRESS']) in np.array(self.df_old_data['ADDRESS']):
 				ind = self.df_old_data.index[self.df_old_data['ADDRESS'] == str(new_row['ADDRESS'])].tolist()
 				self.df_new_data.loc[idx_new,'DESC'] = self.df_old_data.loc[ind[0], 'DESC']
+				if idx % 100 == 0:
+					print('comparing datasets on line {} / {}'.format(idx, self.df_new_data.shape[0]))
 
 
 	def scraping_desc(self):
@@ -130,6 +134,9 @@ class Data_Update:
 		if self.df_old_data.columns.sort() == self.df_new_data.columns.sort(): 
 			self.df_old_data = pd.concat([self.df_old_data,
 				self.df_new_data]).drop_duplicates()
+			print('concatinated old and new df')
+		else:
+			print('couldnt concatinate old and new df for exporting')
 		# self.df_old_data['ID'] = self.df_old_data.index
 		# self.df_new_data['ID'] = self.df_new_data.index
 		self.df_old_data.to_csv('../data/old_data.csv')
@@ -138,7 +145,7 @@ class Data_Update:
 
 if __name__ == '__main__':
 	update = Data_Update('../data/housing-data.csv')
-	# update.collect_new_data()
+	update.collect_new_data()
 	update.collecting_files()
 	update.compare_datasets()
 	update.scraping_desc()
