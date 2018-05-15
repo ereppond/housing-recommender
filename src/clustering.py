@@ -2,14 +2,14 @@ import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from users import build_user_matrix
+# from users import build_user_matrix
 
 class Recommending:
 	def __init__(self, n_clusters=30):
 		'''Initializes the TFIDF Vectorizer and KMeans Obj'''
 
 		self.n_clusters = n_clusters
-		self.tfidf = TfidfVectorizer(stop_words='english', max_features=300)
+		self.tfidf = TfidfVectorizer(stop_words='english', max_features=100)
 		self.km = KMeans(n_clusters=self.n_clusters)
 		self.results = {}
 
@@ -28,17 +28,18 @@ class Recommending:
 		self.tfidf.fit(X)
 		desc_tfidf = self.tfidf.transform(X)
 		self.km.fit(desc_tfidf.todense())
-		tfidf_matrix = pd.concat([pd.DataFrame(tfidf.todense()),
-                          df['PRICE'] / 1000, df['BEDS']], axis=1)
+		tfidf_matrix = pd.concat([pd.DataFrame(desc_tfidf.todense()),
+						  df['PRICE'] / 1000, df['BEDS']], axis=1)
 		return tfidf_matrix
 
-	def cosine_sim(self, tfidf):
+	def cosine_sim(self, tfidf, df):
 		''' Creates a dictionary of the houses to consider based on cosine similarity.
 		
 		Params:
 			tfidf (Tfidf object): object created in fit method
+			df (DataFrame): dataframe for reference to address
 		'''
-		
+		tfidf.fillna(0, inplace=True)
 		cosine_similarities = cosine_similarity(tfidf,tfidf)
 		for idx, row in df.iterrows():
 			if idx < len(df):
@@ -133,23 +134,25 @@ def get_data(file, fave_file=None):
 	if 'Unnamed: 0' in df.columns:
 		df.drop('Unnamed: 0', inplace=True, axis=1)
 	df.drop_duplicates(inplace=True)
+	PROPERTY_TYPE = pd.get_dummies(df['PROPERTY TYPE'])
+	df = pd.concat([df, PROPERTY_TYPE], axis=1)
 	for idx, row in df.iterrows():
-	    if row['Vacant Land'] == 1 and str(row['BEDS']) == 'NaN':
-	        df.loc[idx, 'BEDS'] = 0
-	        df.loc[idx, 'BATHS'] = 0
-	        df.loc[idx, 'SQUARE FEET'] = 0
-	        df.loc[idx, '$/SQUARE FEET'] = 0
-	for col in df_only_num.columns:
-    	df[col].fillna(df[col].mean())
-    df['PRICE'] = df['PRICE'].dropna(axis=0)
+		if row['Vacant Land'] == 1 and str(row['BEDS']) == 'NaN':
+			df.loc[idx, 'BEDS'] = 0
+			df.loc[idx, 'BATHS'] = 0
+			df.loc[idx, 'SQUARE FEET'] = 0
+			df.loc[idx, '$/SQUARE FEET'] = 0
+	df['BEDS'] = df['BEDS'].fillna(df['BEDS'].mean())
+	df['PRICE'] = df['PRICE'].dropna(axis=0)
+	df['ID'] = df.reset_index(drop=True).index
 	return df
 
 
 if __name__ == '__main__':
 	df = get_data('../data/housing-data.csv', '../data/favorites_test.csv')
 	recs = Recommending()
-	tfidf = recs.fit_transform(df.DESC.values)
-	recs.cosine_sim(tfidf)
+	tfidf = recs.fit_transform(df.DESC.values, df)
+	recs.cosine_sim(tfidf, df)
 	recs.recommend(0, 2)
 	df = recs.result(df)
 	preds = recs.predictions(df)
