@@ -104,7 +104,7 @@ class Data_Update:
 		'''
 
 		i = 0
-		while len(self.df_new_data[self.df_new_data['DESC'] == 'No Description']) > 50 or i < 6:
+		while len(self.df_new_data[self.df_new_data['DESC'] == 'No Description']) > 50 or i < 20:
 			i += 1
 			print(len(self.df_new_data[self.df_new_data['DESC'] == 'No Description']))
 			browser = Chrome()
@@ -127,8 +127,9 @@ class Data_Update:
 		''' Replaces the old csv files with the updated ones.'''
 
 		self.df_new_data['LABEL'] = 0
-		self.df_old_data = pd.concat([self.df_old_data,
-			self.df_new_data]).drop_duplicates()
+		if self.df_old_data.columns.sort() == self.df_new_data.columns.sort(): 
+			self.df_old_data = pd.concat([self.df_old_data,
+				self.df_new_data]).drop_duplicates()
 		# self.df_old_data['ID'] = self.df_old_data.index
 		# self.df_new_data['ID'] = self.df_new_data.index
 		self.df_old_data.to_csv('../data/old_data.csv')
