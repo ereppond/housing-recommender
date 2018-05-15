@@ -41,7 +41,7 @@ class Recommending:
 		
 		cosine_similarities = cosine_similarity(tfidf,tfidf)
 		for idx, row in df.iterrows():
-			if idx < 2822:
+			if idx < len(df):
 				similar_indices = cosine_similarities[idx].argsort()[:-5:-1]
 				similar_items = [(cosine_similarities[idx][i], i) for i in similar_indices]
 				self.results[row['ID']] = similar_items[1:]
