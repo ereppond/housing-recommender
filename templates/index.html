@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Housing Recommender">
+    <meta name="author" content="Elise Reppond">
+    <title>Housing Recommender</title>
+    <!-- styles -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  </head>
+ 
+  <body>
+  	<img src="{{url_for('static', filename='header.jpg')}}" style="width:100%; height:auto; margin:0 auto;"/>
+
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#recipes-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{{ url_for('index') }}">Housing Recommender</a>
+        </div>
+ 
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="recipes-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="#">View Seattle Data</a></li>
+            <li><a href="#">How to get favorites</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ url_for('welcome') }}">Welcome!</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div><!-- /.container -->
+    </nav>
+ 
+    <header class="masthead text-white text-center">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-9 mx-auto">
+            <h1 class="mb-5">Find houses that better suit your circumstances!</h1>
+            <h3 class="mb-5">Upload your favorite houses dataset here (csv format only)</h3>
+          </div>
+          <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+            <form>
+              <div class="form-row">
+                <div class="col-12 col-lg-30 mb-2 mb-md-0">
+              <center>
+                  <input type="file" id="myFile">
+                  <input type="submit">
+                </div>
+                <div class="col-12 col-md-3">
+              </center>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </header>
+
+   	<br></br>
+   	<br></br>
+   	<br>
+   	<br>
+    <section class="features-icons bg-light text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+              <div class="features-icons-icon d-flex">
+  				<img src="{{url_for('static', filename='customized.png')}}" style="width:30%; height:30%; margin:0 auto;"/>
+              </div>
+              <h3>Customized</h3>
+              <p class="lead mb-0">Get houses based on your favorites in Redfin</p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+              <div class="features-icons-icon d-flex">
+  				<img src="{{url_for('static', filename='dreamhome.png')}}" style="width:30%; height:30%; margin:0 auto;"/>
+              </div>
+              <h3>Find Your Dream Home</h3>
+              <p class="lead mb-0">This will allow you to see houses that otherwise may not be on your radar</p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+              <div class="features-icons-icon d-flex">
+  				<img src="{{url_for('static', filename='easy.png')}}" style="width:20%; height:20%; margin:0 auto;"/>
+              </div>
+              <h3>Easy to Use</h3>
+              <p class="lead mb-0">Ready to use with your own favorite houses</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+	</br>
+	</br>
+
+
+    <div class="container">
+      <div class="content">
+ 
+        <!-- child template -->
+        {% block content %}
+        {% endblock %}
+ 
+      </div>
+      <div class="footer">
+        <hr>
+        <p>Elise Reppond - 2018</p>
+      </div>
+    </div><!-- /.container -->
+ 
+    <!-- scripts -->
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  </body>
+</html>
