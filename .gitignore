@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 src/__pycache__/
+notebooks/
 
 # C extensions
 *.so
