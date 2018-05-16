@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 src/__pycache__/
 notebooks/
+src/__init__.py
 
 # C extensions
 *.so
