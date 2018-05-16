@@ -19,9 +19,7 @@ ALLOWED_EXTENSIONS = set(['csv'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-dataset = tablib.Dataset()
-with open(os.path.join(os.path.dirname(__file__),'data/data-for-html-1.csv')) as f:
-    dataset.csv = f.read()
+
 
 
 def allowed_file(filename):
@@ -60,11 +58,15 @@ def favorites():
 	# Favorites page to explain how to get the favorited csv file
     return render_template('favorites.html')
 
+dataset = tablib.Dataset()
+with open(os.path.join(os.path.dirname(__file__),'data/data-for-html-1.csv')) as f:
+    dataset.csv = f.read()
 
 @app.route('/data', methods=['GET', 'POST'])
 def data():
-	# Data page to show what the data looks like
-    data = dataset.html
+    # Data page to show what the data looks like
+    df = pd.read_csv('data/data-for-html-1.csv')
+    data = [df[col].values for col in df.columns]
     return render_template('data.html', data=data)
     
 
