@@ -31,7 +31,7 @@ def allowed_file(filename):
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
-	return render_template('test.html') 
+    return render_template('test.html') 
 
 @app.route('/uploadajax', methods=['POST'])
 def uploadajax():
@@ -39,8 +39,11 @@ def uploadajax():
     filename=file.filename
     f = BytesIO()
     file.save(f)
-    recommendations = do_everything(f) #pandas df with table to display 
-    return 'done'
+    print(f)
+    # df = do_everything(f)  # returns pandas df with table to display 
+    # list_of_vals = [list(df[i].values) for i in df]
+    # columns = df.columns
+    # return render_template('uploaded_file.html', data=zip(*list_of_vals), columns=columns)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -59,19 +62,19 @@ def index():
 
 @app.route('/uploaded_file', methods = ['GET', 'POST'])
 def uploaded_file():
-	#for uploading file 
+    #for uploading file 
     return render_template('uploaded_file.html')
 
 
 @app.route('/welcome', methods=['GET', 'POST'])
 def welcome():
-	# Welcome page to explain what is going on in the site
+    # Welcome page to explain what is going on in the site
     return render_template('welcome.html')
 
 
 @app.route('/favorites', methods=['GET', 'POST'])
 def favorites():
-	# Favorites page to explain how to get the favorited csv file
+    # Favorites page to explain how to get the favorited csv file
     return render_template('favorites.html')
 
 
@@ -82,7 +85,6 @@ def data():
     df.drop('Unnamed: 0', axis =1, inplace=True)
     df.fillna(0, inplace=True)
     list_of_vals = [list(df[i].values) for i in df]
-    data = (df[col].values for col in df.columns)
     columns = df.columns
     return render_template('data.html', data=zip(*list_of_vals), columns=columns)
     
