@@ -39,6 +39,7 @@ class Recommending:
 			tfidf (Tfidf object): object created in fit method
 			df (DataFrame): dataframe for reference to address
 		'''
+
 		tfidf.fillna(0, inplace=True)
 		cosine_similarities = cosine_similarity(tfidf,tfidf)
 		for idx, row in df.iterrows():
@@ -54,22 +55,13 @@ class Recommending:
 			id (int): id of house that needs recommendations
 			num (int): num of recommendations
 		'''
-		
-		try:
-			if (num == 0):
-				print("Unable to recommend any house")
-			elif (num==1):
-				print("Recommending " + str(num) + " house similar to " + self.item(id))
-			else :
-				print("Recommending " + str(num) + " houses similar to " + self.item(id))
 
-			print("----------------------------------------------------------")
-			recs = self.results[id][:num]
-			for rec in recs:
-				print("You may also like to look at: " + self.item(rec[1]) + " (score:" + str(rec[0]) + ")")
-		except IndexError:
-			print('These are the houses most similar to your house')
-			pass
+		recs = self.results[id][:num]
+		final_recs = []
+		for rec in recs:
+			if rec[0] > 0:
+				final_recs.append(rec)
+		return final_recs[0]
 
 	def item(self, id):
 		''' Helper method for returning item in dataframe when looking for recommendations.
@@ -146,6 +138,23 @@ def get_data(file, fave_file=None):
 	df['PRICE'] = df['PRICE'].dropna(axis=0)
 	df['ID'] = df.reset_index(drop=True).index
 	return df
+
+def do_everything(file):
+	df = get_data('../data/housing-data.csv', file)
+	recs = Recommending()
+	tfidf = recs.fit_transform(df.DESC.values, df)
+	recs.cosine_sim(tfidf, df)
+	yes = df[df['FAVORITE'] == 'Y']
+	recommend = [] #list of new rows 
+	for idx, item in yes.iterrows():
+		house_id = item['ID']
+		cur_recommendation = recs.recommend(house_id, 1)
+		row_of_rec = df[df['ID'] == house_id]
+		other_info = {'Favorited House': item['ADDRESS'], 'Similarity Score': cur_recommendation[0] - 0.2}
+		recommend.append(pd.concat([other_info, row_of_rec], axis=1))
+	recommendations = pd.concat(recommend)
+	return recommensations
+
 
 
 if __name__ == '__main__':
