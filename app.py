@@ -8,6 +8,7 @@ from flask import (Flask,
                    redirect, 
                    url_for)
 import tablib
+from io import BytesIO
 import os
 import pandas as pd
 
@@ -25,6 +26,19 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+	return render_template('test.html') 
+
+@app.route('/uploadajax', methods=['POST'])
+def uploadajax():
+    file = request.files['file']
+    filename=file.filename
+    f = BytesIO()
+    file.save(f)
+    return 'done'
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -58,16 +72,17 @@ def favorites():
 	# Favorites page to explain how to get the favorited csv file
     return render_template('favorites.html')
 
-dataset = tablib.Dataset()
-with open(os.path.join(os.path.dirname(__file__),'data/data-for-html-1.csv')) as f:
-    dataset.csv = f.read()
 
 @app.route('/data', methods=['GET', 'POST'])
 def data():
     # Data page to show what the data looks like
     df = pd.read_csv('data/data-for-html-1.csv')
-    data = [df[col].values for col in df.columns]
-    return render_template('data.html', data=data)
+    df.drop('Unnamed: 0', axis =1, inplace=True)
+    df.fillna(0, inplace=True)
+    list_of_vals = [list(df[i].values) for i in df]
+    data = (df[col].values for col in df.columns)
+    columns = df.columns
+    return render_template('data.html', data=zip(*list_of_vals), columns=columns)
     
 
 
