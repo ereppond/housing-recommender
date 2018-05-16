@@ -11,6 +11,7 @@ import tablib
 from io import BytesIO
 import os
 import pandas as pd
+from src.clustering import do_everything
 
 # from ec2.prophet_db import web_query
 
@@ -38,6 +39,7 @@ def uploadajax():
     filename=file.filename
     f = BytesIO()
     file.save(f)
+    recommendations = do_everything(f) #pandas df with table to display 
     return 'done'
 
 
