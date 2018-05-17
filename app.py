@@ -36,14 +36,13 @@ def test():
 @app.route('/uploadajax', methods=['POST'])
 def uploadajax():
     file = request.files['file']
-    filename=file.filename
     f = BytesIO()
     file.save(f)
-    print(f)
-    # df = do_everything(f)  # returns pandas df with table to display 
-    # list_of_vals = [list(df[i].values) for i in df]
-    # columns = df.columns
-    # return render_template('uploaded_file.html', data=zip(*list_of_vals), columns=columns)
+    f.seek(0)
+    df = do_everything(f)  # returns pandas df with table to display 
+    list_of_vals = [list(df[i].values) for i in df]
+    columns = df.columns
+    return render_template('uploaded_file.html', data=zip(*list_of_vals), columns=columns)
 
 
 @app.route('/', methods=['GET', 'POST'])
