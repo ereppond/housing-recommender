@@ -29,6 +29,10 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+@app.route('/recommendations', methods=['GET', 'POST'])
+def recommendations():
+    return render_template('recommendations.html') 
+
 @app.route('/test', methods=['GET', 'POST'])
 def test():
     return render_template('test.html') 
@@ -48,14 +52,7 @@ def uploadajax():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-#            filename = secure_filename(file.filename)
-            filename = file.filename
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('upload_file'))
-        else:
-            return render_template('index.html')
+        return redirect(url_for('uploadajax'))
     return render_template('index.html')
 
 
