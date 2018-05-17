@@ -59,7 +59,7 @@ class Recommending:
         for rec in recs:
             if rec[0] > 0:
                 final_recs.append(rec)
-        return final_recs[0]
+        return final_recs
 
     def item(self, id):
         ''' Helper method for returning item in dataframe when looking for recommendations.
@@ -112,25 +112,30 @@ def do_everything(file):
     tfidf = recs.fit_transform(df.DESC.values, df)
     recs.cosine_sim(tfidf, df)
     yes = df[df['FAVORITE'] == 'Y']
-    recommend = [] #list of new rows 
+    recommend = pd.DataFrame()
+    cur_recommendation = []
+    houses = list(yes['ADDRESS'].values)
+    scores = []
     for idx, item in yes.iterrows():
         house_id = item['ID']
-        cur_recommendation = recs.recommend(house_id, 1)
-        row_of_rec = df[df['ID'] == house_id]
-        other_info = {'Favorited House': item['ADDRESS'], 'Similarity Score': cur_recommendation[0] - 0.2}
-        recommend.append(pd.concat([pd.DataFrame(other_info, index=yes), row_of_rec], axis=1))
-    recommendations = pd.concat(recommend)
-    recommendations.drop(['DAYS ON MARKET', 'HOA/MONTH', 'ZIP', 'DESC', 'PRICE/SQUAREFT', 
-        'SALE TYPE', 'SOLD DATE', 'STATUS','NEXT OPEN HOUSE START TIME', 
-        'NEXT OPEN HOUSE END TIME', 'SOURCE', 'MLS#', 'FAVORITE', 'INTERESTED', 
-        'LATITUDE', 'LONGITUDE','LABEL', 'ID'], axis=1, inplace=True)
-    return recommendations
+        cur_recommendation.append(recs.recommend(house_id, 1))
+    for recs_ in cur_recommendation:
+        for rec in recs_:
+            new_row = df[df['ID'] == rec[1]]
+            scores.append(round(rec[0], 3) - .17)
+        recommend = pd.concat([recommend, new_row], ignore_index=True)
+    Score = pd.Series((scores), name='Score')
+    favorited = pd.Series(houses, name='Favorited House')
+    combination = pd.DataFrame([favorited, Score])
+    recommendations = pd.concat([combination.T, recommend], axis=1)
+    recommendations.drop(['DAYS ON MARKET', 'HOA/MONTH', 'ZIP', 'DESC', 'PRICE/SQUAREFT', 'SALE TYPE', 'SOLD DATE', 'STATUS','NEXT OPEN HOUSE START TIME', 'NEXT OPEN HOUSE END TIME', 'SOURCE', 'MLS#', 'FAVORITE', 'INTERESTED', 'LATITUDE', 'LONGITUDE', 'LABEL', 'ID'], axis=1, inplace=True)
+    return(recommendations)
 
 
 
 if __name__ == '__main__':
     recs = do_everything('../data/favorites_test.csv')
-    print(recs.columns)
+    print(recs)
     # df = get_data('../data/housing-data.csv', '../data/favorites_test.csv')
     # recs = Recommending()
     # tfidf = recs.fit_transform(df.DESC.values, df)
