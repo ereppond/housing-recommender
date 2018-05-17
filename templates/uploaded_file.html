@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,7 +11,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <meta charset="utf-8" />
-	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}"/>
   </head>
  
   <body>
@@ -45,6 +44,37 @@
         </div><!--/.nav-collapse -->
       </div><!-- /.container -->
     </nav>
+      <div style="text-align: center; width:70%;">
+        <table width="50%" border="1" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th style="text-align: center;">Favorited House</th>
+              <th style="text-align: center;">Similarity Score</th>
+              <th style="text-align: center; width:70%;">Property Type</th>
+              <th style="text-align: center;">Address</th>
+              <th style="text-align: center;">City</th>
+              <th style="text-align: center;">State</th>
+              <th style="text-align: center;">Price</th>
+              <th style="text-align: center;">Beds</th>
+              <th style="text-align: center;">Baths</th>
+              <th style="text-align: center;">Location</th>
+              <th style="text-align: center;">Sqft</th>
+              <th style="text-align: center;">Lot Size</th>
+              <th style="text-align: center;">Yr Built</th>
+              <th style="text-align: center; width:30%;">URL</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for col in data %}  <!--start for loop over variable data-->
+            <tr>
+              {% for row in col %} 
+              <td>{{row}}</td>
+              {% endfor %}
 
-</body>
+            </tr>
+            {% endfor %}           <!-- end for loop -->
+          </tbody>
+        </table>
+      </div>
+  </body>
 </html>
