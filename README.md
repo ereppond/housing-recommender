@@ -41,8 +41,9 @@ Predicting Housing Prices
 
 ## Features of the recommender system:
 * Tfidf Vectorizer
-* Price 
+* Price (scaled)
 * Number of bedrooms 
+* Year house was built (scaled)
 
 ------
 
@@ -52,6 +53,10 @@ Predicting Housing Prices
 
 ----
 ## Updates
+
+* May 18, 2018
+	* Pep8 Documentation fixed
+	* Clean code
 
 * May 17, 2018
 	* All functions working and website is local
