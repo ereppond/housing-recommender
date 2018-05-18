@@ -46,7 +46,7 @@ class Recommending:
                 similar_items = [(cosine_similarities[idx][i], i) for i in similar_indices]
                 self.results[row['ID']] = similar_items[1:]
 
-    def recommend(self, id, num):
+    def recommend(self, id):
         ''' Prints the recommendations for that house.
         
         Params:
@@ -54,7 +54,7 @@ class Recommending:
             num (int): num of recommendations
         '''
 
-        recs = self.results[id][:num]
+        recs = self.results[id]
         final_recs = []
         for rec in recs:
             if rec[0] > 0:
@@ -106,24 +106,28 @@ def get_data(file, fave_file=None):
     return df
 
 def do_everything(file):
+    '''Function that runs all necessary functions in file to work with
+     app.py'''
     df = get_data('data/housing-data.csv', file)
     # build_user_matrix(df, file)
     recs = Recommending()
     tfidf = recs.fit_transform(df.DESC.values, df)
     recs.cosine_sim(tfidf, df)
-    yes = df[df['FAVORITE'] == 'Y']
+    yes = df[df['FAVORITE'] == 'Y'].reset_index()
     recommend = pd.DataFrame()
     cur_recommendation = []
-    houses = list(yes['ADDRESS'].values)
+    houses = []
     scores = []
     for idx, item in yes.iterrows():
         house_id = item['ID']
-        cur_recommendation.append(recs.recommend(house_id, 1))
-    for recs_ in cur_recommendation:
+        cur_recommendation.append(recs.recommend(house_id))
+    for i, recs_ in enumerate(cur_recommendation):
+        house_id = yes['ADDRESS'][i]
         for rec in recs_:
             new_row = df[df['ID'] == rec[1]]
             scores.append(round(rec[0], 3) - .17)
-        recommend = pd.concat([recommend, new_row], ignore_index=True)
+            houses.append(house_id)
+            recommend = pd.concat([recommend, new_row], ignore_index=True)
     Score = pd.Series((scores), name='Score')
     favorited = pd.Series(houses, name='Favorited House')
     combination = pd.DataFrame([favorited, Score])
