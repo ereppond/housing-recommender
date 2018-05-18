@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from datetime import datetime
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -27,12 +28,12 @@ class Recommending:
         desc_tfidf = self.tfidf.transform(X)
         tfidf_matrix = pd.concat([pd.DataFrame(desc_tfidf.todense()),
                           df['PRICE'] / 1000, df['BEDS'], 
-                          df['YEAR BUILT'] / 10], axis=1)
+                          df['YEAR BUILT'] / 100], axis=1)
         return tfidf_matrix
 
     def cosine_sim(self, tfidf, df):
         ''' Creates a dictionary of the houses to consider based on cosine 
-            similarity.
+        similarity.
         
         Params:
             tfidf (Tfidf object): object created in fit method
@@ -68,7 +69,7 @@ class Recommending:
 
     def item(self, id):
         ''' Helper method for returning item in dataframe when looking for 
-            recommendations.
+        recommendations.
 
         Params:
             id (int): id of recommended house
@@ -96,21 +97,24 @@ def get_data(file, fave_file=None):
         for idx, row in df.iterrows():
             if row['ADDRESS'] in list(df_faves['ADDRESS']):
                 df.loc[idx,'FAVORITE'] = 'Y'
-        # build_user_matrix(df, fave_file)
-    df['DESC'] = df['DESC'].fillna('No Description')
     if 'Unnamed: 0' in df.columns:
         df.drop('Unnamed: 0', inplace=True, axis=1)
-    df.drop_duplicates(inplace=True)
+    # below here until hashtag needs to be deleted because its now in 
+    # update data
+    df['DESC'] = df['DESC'].fillna('No Description')
     for idx, row in df.iterrows():
-        if row['PROPERTY TYPE'] == 'Vacant Land' and str(row['BEDS']) == 'NaN':
-            df.loc[idx, 'BEDS'] = 0
-            df.loc[idx, 'BATHS'] = 0
-            df.loc[idx, 'SQUARE FEET'] = 0
-            df.loc[idx, '$/SQUARE FEET'] = 0
+        if row['PROPERTY TYPE'] == 'Vacant Land':
+            df.loc[idx, 'YEAR BUILT'] = datetime.now().year
+            if str(row['BEDS']) == 'NaN':
+                df.loc[idx, 'BEDS'] = 0
+                df.loc[idx, 'BATHS'] = 0
+                df.loc[idx, 'SQUARE FEET'] = 0
+                df.loc[idx, '$/SQUARE FEET'] = 0
     df['PRICE'] = df['PRICE'].dropna(axis=0)
     df = df.apply(lambda x:  x.fillna(x.mean()) if np.issubdtype(x.dtype, 
         np.number) else x.fillna(0),axis=0)    
     df['ID'] = df.reset_index(drop=True).index
+    #
     return df
 
 def do_everything(file, orig_file='data/housing-data.csv'):
@@ -121,38 +125,44 @@ def do_everything(file, orig_file='data/housing-data.csv'):
             recommendations 
         orig_file (file path): file path of all housing data
     Returns:
-        recommendations ():
+        recommendations (DataFrame): pandas df with the house
+            addresses of the houses they favorited, the similarity score of 
+            the houses, and the houses they've been recommended
     '''
+
     df = get_data(orig_file, file)
     # build_user_matrix(df, file)
-    recs = Recommending()
-    tfidf = recs.fit_transform(df.DESC.values, df)
-    recs.cosine_sim(tfidf, df)
+    model = Recommending()  
+    tfidf = model.fit_transform(df.DESC.values, df)
+    model.cosine_sim(tfidf, df)
     yes = df[df['FAVORITE'] == 'Y'].reset_index()
-    recommend = pd.DataFrame()
-    cur_recommendation = []
-    houses = []
+    temp_df = pd.DataFrame()
+    cur_rec = []
+    houses = [] #houses that were favorited - there will be duplicates
     scores = []
     for idx, item in yes.iterrows():
         house_id = item['ID']
-        cur_recommendation.append(recs.recommend(house_id))
-    for i, recs_ in enumerate(cur_recommendation):
+        cur_rec.append(model.recommend(house_id))
+    for i, recs_ in enumerate(cur_rec):
         house_id = yes['ADDRESS'][i]
         for rec in recs_:
             new_row = df[df['ID'] == rec[1]]
             scores.append(round(rec[0], 3) - .17)
             houses.append(house_id)
-            recommend = pd.concat([recommend, new_row], ignore_index=True)
-    Score = pd.Series((scores), name='Score')
-    favorited = pd.Series(houses, name='Favorited House')
-    combination = pd.DataFrame([favorited, Score])
-    recommendations = pd.concat([combination.T, recommend], axis=1)
-    recommendations.drop(['DAYS ON MARKET', 'HOA/MONTH', 'ZIP', 
-        'DESC', 'PRICE/SQUAREFT', 'SALE TYPE', 'SOLD DATE', 
-        'STATUS','NEXT OPEN HOUSE START TIME', 'NEXT OPEN HOUSE END TIME', 
-        'SOURCE', 'MLS#', 'FAVORITE', 'INTERESTED', 'LATITUDE', 'LONGITUDE',
-        'LABEL', 'ID'], axis=1, inplace=True)
-    return(recommendations)
+            temp_df = pd.concat([temp_df, new_row], ignore_index=True)
+    combination = pd.DataFrame([pd.Series(houses, name='Favorited House'), 
+        pd.Series((scores), name='Score')])
+    recs = pd.concat([combination.T, temp_df], axis=1)
+    for idx, row in recs.iterrows():
+        recs.loc[idx, 'ADDRESS'] = f"{str(row['ADDRESS'])} {row['CITY']} {row['STATE']} {str(row['ZIP'])}"
+        recs.loc[idx, 'PROPERTY TYPE'] = str(row['PROPERTY TYPE']) + ' ' + str(int(row['YEAR BUILT']))
+    recs = (recs[['Favorited House', 'Score', 'PROPERTY TYPE', 'ADDRESS', 
+        'PRICE', 'BEDS', 'BATHS', 'LOCATION', 'SQUARE FEET', 'LOT SIZE', 
+        'URL']])
+    for col in recs.columns:
+        if np.issubdtype(recs[col].dtype, np.number):
+            recs[col] = recs[col].apply(lambda x: round(x, 2))
+    return recs
 
 
 if __name__ == '__main__':

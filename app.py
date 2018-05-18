@@ -7,9 +7,7 @@ from flask import (Flask,
                    request,
                    redirect, 
                    url_for)
-import tablib
 from io import BytesIO
-import os
 import pandas as pd
 from src.clustering import do_everything
 
@@ -35,8 +33,7 @@ def index():
 def data():
     '''Data page to display what the data looks like on the end of the recommender system.
     
-    * Note: this function calls a function 'do_everything' from clustering.py that does 
-        everything in order to make the recommender system run.
+    * Note: this function calls a function 'do_everything' from clustering.py that does everything in order to make the recommender system run.
 
     Returns:
         data.html (html template): html template that displays the example data
@@ -56,8 +53,7 @@ def favorites():
     ''' Route to favorites page to explain how to get the favorited csv file.
 
     Returns:
-        favorites.html (html template): html template of describing how to 
-            retrieve favorites in csv format
+        favorites.html (html template): html template of describing how to retrieve favorites in csv format
     '''
 
     return render_template('favorites.html')
@@ -107,7 +103,6 @@ def welcome():
     # Welcome page to explain what is going on in the site
     return render_template('welcome.html')
 
-
 # @app.route('/table')
 # def table():
 #     df = pd.read_csv('data/final_html.csv')
@@ -116,8 +111,6 @@ def welcome():
 #     list_of_vals = [list(df[i].values) for i in df]
 #     columns = df.columns
 #     return render_template('tabulator-table.html')
-
-
 
 
 if __name__ == '__main__':
