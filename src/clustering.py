@@ -7,7 +7,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 class Recommending:
     def __init__(self):
-        '''Initializes the TFIDF Vectorizer and KMeans Obj'''
+        '''Initializes the TFIDF Vectorizer Object'''
 
         self.tfidf = TfidfVectorizer(stop_words='english', max_features=100)
         self.results = {}
@@ -18,20 +18,21 @@ class Recommending:
         Params:
             X (array): Array of the descriptions of houses
             df (DataFrame): dataframe of numerical values to add
-
         Returns:
-            tfidf_matrix (array): matrix with words, 
-                price, and beds as features
+            tfidf_matrix (array): matrix with words, price, and beds as 
+                features
         '''
         
         self.tfidf.fit(X)
         desc_tfidf = self.tfidf.transform(X)
         tfidf_matrix = pd.concat([pd.DataFrame(desc_tfidf.todense()),
-                          df['PRICE'] / 1000, df['BEDS']], axis=1)
+                          df['PRICE'] / 1000, df['BEDS'], 
+                          df['YEAR BUILT'] / 10], axis=1)
         return tfidf_matrix
 
     def cosine_sim(self, tfidf, df):
-        ''' Creates a dictionary of the houses to consider based on cosine similarity.
+        ''' Creates a dictionary of the houses to consider based on cosine 
+            similarity.
         
         Params:
             tfidf (Tfidf object): object created in fit method
@@ -52,6 +53,10 @@ class Recommending:
         Params:
             id (int): id of house that needs recommendations
             num (int): num of recommendations
+        Returns:
+            final_recs (list[tuples]): each item in the list is a 
+                recommendation - each tuple is the score and the house id for 
+                each recommendation
         '''
 
         recs = self.results[id]
@@ -62,12 +67,15 @@ class Recommending:
         return final_recs
 
     def item(self, id):
-        ''' Helper method for returning item in dataframe when looking for recommendations.
-        
+        ''' Helper method for returning item in dataframe when looking for 
+            recommendations.
+
         Params:
             id (int): id of recommended house
+        Returns:
+            address (string): address of house that needs recommendations 
         '''
-        
+
         return df.loc[df.index == id]['ADDRESS'].tolist()[0]
 
 
@@ -105,10 +113,17 @@ def get_data(file, fave_file=None):
     df['ID'] = df.reset_index(drop=True).index
     return df
 
-def do_everything(file):
-    '''Function that runs all necessary functions in file to work with
-     app.py'''
-    df = get_data('data/housing-data.csv', file)
+def do_everything(file, orig_file='data/housing-data.csv'):
+    '''Function that runs all necessary functions in file to work with app.py.
+    
+    Params:
+        file (BytesIO obj or file path): csv like file that needs 
+            recommendations 
+        orig_file (file path): file path of all housing data
+    Returns:
+        recommendations ():
+    '''
+    df = get_data(orig_file, file)
     # build_user_matrix(df, file)
     recs = Recommending()
     tfidf = recs.fit_transform(df.DESC.values, df)
@@ -132,13 +147,16 @@ def do_everything(file):
     favorited = pd.Series(houses, name='Favorited House')
     combination = pd.DataFrame([favorited, Score])
     recommendations = pd.concat([combination.T, recommend], axis=1)
-    recommendations.drop(['DAYS ON MARKET', 'HOA/MONTH', 'ZIP', 'DESC', 'PRICE/SQUAREFT', 'SALE TYPE', 'SOLD DATE', 'STATUS','NEXT OPEN HOUSE START TIME', 'NEXT OPEN HOUSE END TIME', 'SOURCE', 'MLS#', 'FAVORITE', 'INTERESTED', 'LATITUDE', 'LONGITUDE', 'LABEL', 'ID'], axis=1, inplace=True)
+    recommendations.drop(['DAYS ON MARKET', 'HOA/MONTH', 'ZIP', 
+        'DESC', 'PRICE/SQUAREFT', 'SALE TYPE', 'SOLD DATE', 
+        'STATUS','NEXT OPEN HOUSE START TIME', 'NEXT OPEN HOUSE END TIME', 
+        'SOURCE', 'MLS#', 'FAVORITE', 'INTERESTED', 'LATITUDE', 'LONGITUDE',
+        'LABEL', 'ID'], axis=1, inplace=True)
     return(recommendations)
 
 
-
 if __name__ == '__main__':
-    recs = do_everything('../data/favorites_test.csv')
+    recs = do_everything('../data/favorites_test.csv', '../data/housing-data.csv')
     print(recs)
     # df = get_data('../data/housing-data.csv', '../data/favorites_test.csv')
     # recs = Recommending()
