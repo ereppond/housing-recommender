@@ -47,6 +47,12 @@ Predicting Housing Prices
 ----
 ## Updates
 
+* May 17, 2018
+	* All functions working and website is local
+
+* May 15, 2018
+	* Recommender is fully functional 
+
 * May 10, 2018
 	* Built baseline recommender based on users favorited houses
 	* Began building deployment(html)
