@@ -67,7 +67,7 @@ class Data_Update:
 		except ValueError:
 			self.df_new_data = self.df_old_data
 			print('COULD NOT CONCATINATE FILES')
-		self.df_new_data = self.clean_data()
+		self.clean_data()
 		self.df_new_data = self.df_new_data.reset_index().drop('index', axis=1)
 
 
@@ -82,11 +82,10 @@ class Data_Update:
 			{'URL (SEE http://www.redfin.com/buy-a-home/comparative-market-analysis FOR INFO ON PRICING)': 
 			'URL', 
 			'$/SQUARE FEET': 'PRICE/SQUAREFT'})
-		self.df_new_data['SALE TYPE'] = self.df_new_data['SALE TYPE'].apply(
-			lambda x: 1 if x == 'MLS Listing' or x == 'For-Sale-by-Owner Listing' 
-			else 0)
 		self.df_new_data.drop(self.df_new_data[self.df_new_data['STATE']
 			!= 'WA'].index, inplace=True)
+	    self.df_new_data['PRICE'] = self.df_new_data['PRICE'].dropna(axis=0)
+		self.df_new_data.drop_duplicates(inplace=True)
 		for idx, row in self.df_new_data.iterrows():
 	        if row['PROPERTY TYPE'] == 'Vacant Land':
 	            self.df_new_data.loc[idx, 'YEAR BUILT'] = datetime.now().year
@@ -95,9 +94,13 @@ class Data_Update:
 	                self.df_new_data.loc[idx, 'BATHS'] = 0
 	                self.df_new_data.loc[idx, 'SQUARE FEET'] = 0
 	                self.df_new_data.loc[idx, '$/SQUARE FEET'] = 0
-	    self.df_new_data['PRICE'] = self.df_new_data['PRICE'].dropna(axis=0)
-		self.df_new_data.drop_duplicates(inplace=True)
-		return self.df_new_data
+	    self.df_new_data['LABEL'] = 0
+	    df = df.apply(lambda x:  x.fillna(x.mean()) if np.issubdtype(x.dtype, 
+	    	np.number) else x.fillna(0),axis=0)    
+    	df['ID'] = df.reset_index(drop=True).index
+		'''***** note columns have been added such as ID
+			and label column needs to be removed once the 
+			original data has been altered'''
 
 
 	def compare_datasets(self):
@@ -150,15 +153,13 @@ class Data_Update:
 			print('concatinated old and new df')
 		else:
 			print('couldnt concatinate old and new df for exporting')
-		# self.df_old_data['ID'] = self.df_old_data.index
-		# self.df_new_data['ID'] = self.df_new_data.index
 		self.df_old_data.to_csv('../data/old_data.csv')
 		self.df_new_data.to_csv('../data/housing-data-new-test.csv')
 
 
 if __name__ == '__main__':
 	update = Data_Update('../data/housing-data.csv')
-	# update.collect_new_data()
+	update.collect_new_data()
 	update.collecting_files()
 	update.compare_datasets()
 	update.scraping_desc()
