@@ -7,7 +7,6 @@ def build_user_matrix(df=None, new_user):
     Params:
         df (DataFrame): dataframe of data (when called from clustering.py)
         new_user (file): df with favorited col updated for user
-
     Returns:
         users (DataFrame): pandas df of updated users
     '''
