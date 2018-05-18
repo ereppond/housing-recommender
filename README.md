@@ -1,8 +1,10 @@
-Predicting Housing Prices
+# Housing Recommender
 
-> How frustrating is it when you want to look for houses to buy but you aren't sure where to begin. There are so many different factors that go into deciding when, where, and why to buy a house. 
+> How frustrating is it when you want to look for houses to buy but you aren't sure where to begin? There are so many different factors that go into deciding when, where, and why to buy a house. 
 
-> My goal is to build a recommender system that will hopefully make the process of looking for houses a bit easier. My hope is to use NLP on descriptions of houses you've already liked to cluster houses, along with different circumstances you're in, such as the size of family, job location, etc. to help you decide where you should live. 
+> My goal is to build a recommender system that will hopefully make the process of looking for houses a bit easier. I found the number of results to be frustrating because I wasn't necessarily set on one location. Therefore, I decided to build a system that would give me results in more than one location given my requirements for a house.
+
+> I use Natural Language Processing on descriptions of houses, along with price, number of bedrooms, and the year the house was (or will be) built to find cosine similarity between houses to return new houses to you in order to help you decide where you should live. 
 
 ## Structure:
 > The website will take your favorited houses as csv format to recommend similar houses that may not be what you had been searching for originally but may be suitable for your circumstances. 
@@ -14,16 +16,8 @@ Predicting Housing Prices
 2. Click on the 'Download' button that is to the left of the 'Map Homes' button.
 3. Upload favorited houses as csv to the website.
 
-## Information that can be entered:
-* Number of bedrooms
-* Number of bathrooms
-* Desired square footage
-* Price range
-* Job location
-* Max distance from job
-* Children?
-
 ----
+
 ## Features of the data:
 * zip-code: zip code of the house
 * bedrooms: number of bedrooms in the house
@@ -37,6 +31,7 @@ Predicting Housing Prices
 * location: the neighborhood of the house
 * lot-size: size of the lot in acres
 * days-on-market: number of days the house has been on the market
+
 ----
 
 ## Features of the recommender system:
@@ -49,7 +44,16 @@ Predicting Housing Prices
 
 ### Hopes for future of model
 
-*In the future, I plan on building my dataset to reach cities outside of Washington as well as implementing an app to make this process more accessible*
+*In the future, I plan on building my dataset to reach cities outside of Washington as well as implementing an app to make this process more accessible. I am also hoping to implement a filtering system so the search can be even more refined*
+
+#### Information that can be entered:
+* Number of bedrooms
+* Number of bathrooms
+* Desired square footage
+* Price range
+* Job location
+* Max distance from job
+* Number of children
 
 ----
 ## Updates
