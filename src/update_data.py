@@ -87,7 +87,16 @@ class Data_Update:
 			else 0)
 		self.df_new_data.drop(self.df_new_data[self.df_new_data['STATE']
 			!= 'WA'].index, inplace=True)
-		self.df_new_data['LABEL'] = 0
+		for idx, row in self.df_new_data.iterrows():
+	        if row['PROPERTY TYPE'] == 'Vacant Land':
+	            self.df_new_data.loc[idx, 'YEAR BUILT'] = datetime.now().year
+	            if str(row['BEDS']) == 'NaN':
+	                self.df_new_data.loc[idx, 'BEDS'] = 0
+	                self.df_new_data.loc[idx, 'BATHS'] = 0
+	                self.df_new_data.loc[idx, 'SQUARE FEET'] = 0
+	                self.df_new_data.loc[idx, '$/SQUARE FEET'] = 0
+	    self.df_new_data['PRICE'] = self.df_new_data['PRICE'].dropna(axis=0)
+		self.df_new_data.drop_duplicates(inplace=True)
 		return self.df_new_data
 
 
@@ -133,6 +142,8 @@ class Data_Update:
 		''' Replaces the old csv files with the updated ones.'''
 
 		self.df_new_data['LABEL'] = 0
+		self.df_new_data['DESC'].fillna('No Description', inplace=True)
+
 		if self.df_old_data.columns.sort() == self.df_new_data.columns.sort(): 
 			self.df_old_data = pd.concat([self.df_old_data,
 				self.df_new_data]).drop_duplicates()
