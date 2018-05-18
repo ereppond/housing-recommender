@@ -24,7 +24,7 @@ Predicting Housing Prices
 * Children?
 
 ----
-## Features of the model:
+## Features of the data:
 * zip-code: zip code of the house
 * bedrooms: number of bedrooms in the house
 * bathrooms: number of bathrooms in the house
@@ -37,6 +37,12 @@ Predicting Housing Prices
 * location: the neighborhood of the house
 * lot-size: size of the lot in acres
 * days-on-market: number of days the house has been on the market
+----
+
+## Features of the recommender system:
+* Tfidf Vectorizer
+* Price 
+* Number of bedrooms 
 
 ------
 
