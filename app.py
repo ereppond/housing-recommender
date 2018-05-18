@@ -31,6 +31,49 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/data', methods=['GET', 'POST'])
+def data():
+    '''Data page to display what the data looks like on the end of the recommender system.
+    
+    * Note: this function calls a function 'do_everything' from clustering.py that does 
+        everything in order to make the recommender system run.
+
+    Returns:
+        data.html (html template): html template that displays the example data
+        data (array): array of arrays of values from data
+        columns (list): list of columns in data
+    '''
+
+    df = pd.read_csv('data/final_html.csv')
+    df.drop('Unnamed: 0', axis =1, inplace=True)
+    df.fillna(0, inplace=True)
+    list_of_vals = [list(df[i].values) for i in df]
+    columns = df.columns
+    return render_template('data.html', data=zip(*list_of_vals), columns=columns)
+
+@app.route('/favorites', methods=['GET', 'POST'])
+def favorites():
+    ''' Route to favorites page to explain how to get the favorited csv file.
+
+    Returns:
+        favorites.html (html template): html template of describing how to 
+            retrieve favorites in csv format
+    '''
+
+    return render_template('favorites.html')
+
+
+@app.route('/recommendations', methods=['GET', 'POST'])
+def recommendations():
+    ''' Route to the recommendations page which takes the uploaded file
+
+    Returns: 
+        recommendations.html (html template): template for taking the upload file
+    '''
+
+    return render_template('recommendations.html') 
+
+
 @app.route('/uploadajax', methods=['POST'])
 def uploadajax():
     '''File that is processed in the ajax function at the beginning of the recommendations page.
@@ -49,37 +92,13 @@ def uploadajax():
     return render_template('uploaded_file.html', data=zip(*list_of_vals), columns=columns)
 
 
-@app.route('/data', methods=['GET', 'POST'])
-def data():
-    '''Data page to display what the data looks like on the end of the recommender system.
-    
-    * Note: this function calls a function 'do_everything' from clustering.py that does 
-        everything in order to make the recommender system run.
-
-    Returns:
-        
-    '''
-    df = pd.read_csv('data/final_html.csv')
-    df.drop('Unnamed: 0', axis =1, inplace=True)
-    df.fillna(0, inplace=True)
-    list_of_vals = [list(df[i].values) for i in df]
-    columns = df.columns
-    return render_template('data.html', data=zip(*list_of_vals), columns=columns)
-
-@app.route('/favorites', methods=['GET', 'POST'])
-def favorites():
-    # Favorites page to explain how to get the favorited csv file
-    return render_template('favorites.html')
-
-
-@app.route('/recommendations', methods=['GET', 'POST'])
-def recommendations():
-    return render_template('recommendations.html') 
-
-
 @app.route('/uploaded_file', methods = ['GET', 'POST'])
 def uploaded_file():
-    #for uploading file 
+    ''' Route to page that is returned once file is uploaded
+    
+    Returns: 
+        uploaded_file.html (html template): page for returning the recommendations
+    ''' 
     return render_template('uploaded_file.html')
 
 
