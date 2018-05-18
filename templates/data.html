@@ -1,158 +1,159 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-    function sortTable(columnName){
- 
-         var sort = $("#sort").val();
-         $.ajax({
-]          type:'post',
-          data:{columnName:columnName,sort:sort},
-          success: function(response){
-         
-           $("#tbl tr:not(:first)").remove();
-         
-           $("#tbl").append(response);
-           if(sort == "asc"){
-             $("#sort").val("desc");
-           }else{
-             $("#sort").val("asc");
-           }
-         
-          }
-         });
+  <html lang="en">
+    <head>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script>
+        function sortTable(columnName){
+          var sort = $("#sort").val();
+          $.ajax({
+            type:'post',
+            data:{columnName:columnName,sort:sort},
+            success: function(response){
+           
+              $("#tbl tr:not(:first)").remove();
+             
+              $("#tbl").append(response);
+              if(sort == "asc"){
+                $("#sort").val("desc");
+              }else{
+                $("#sort").val("asc");
+              }
+           
+            }
+          });
         }
-</script>
-</script>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">  
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Housing Recommender">
-    <meta name="author" content="Elise Reppond">
-    <title>Housing Recommender</title>
-    <!-- styles -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <meta charset="utf-8" />
-	<link width="100" rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}"/>
-	<title>Show CSV</title>
-  </head>
- 
-  <body>
-  	 <img src="{{url_for('static', filename='neighborhoods.jpg')}}" style="width:100%; height:auto; margin:0 auto;"/>
+      </script>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">  
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Housing Recommender">
+      <meta name="author" content="Elise Reppond">
+      <title>Housing Recommender</title>
+      <!-- styles -->
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+      <meta charset="utf-8" />
+    	<link width="100" rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}"/>
+    	<title>Show CSV</title>
+    </head>
+   
+    <body>
+    	<img src="{{url_for('static', filename='neighborhoods.jpg')}}" style="width:100%; height:auto; margin:0 auto;"/>
 
-    <!-- Static navbar -->
+      <!-- Static navbar -->
+
+      <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#recipes-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('index') }}">Housing Recommender</a>
+          </div>
+   
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="recipes-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <li><a href="#">Seattle Data Example</a></li>
+              <li><a href="{{ url_for('favorites') }}">How to get favorites</a></li>
+              <li><a href="{{ url_for('recommendations') }}">Recommendations</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="{{ url_for('welcome') }}">Welcome!</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!-- /.container -->
+      </nav>
+
+      <!-- Style for making table look appealing -->
+      <style type="text/css">
+        table.greyGridTable {
+          border: 2px solid #FFFFFF;
+          width: 100%;
+          text-align: center;
+          border-collapse: collapse;
+        }
+        table.greyGridTable td, table.greyGridTable th {
+          border: 1px solid #FFFFFF;
+          padding: 3px 4px;
+        }
+        table.greyGridTable tbody td {
+          font-size: 13px;
+        }
+        table.greyGridTable td:nth-child(even) {
+          background: #EBEBEB;
+        }
+        table.greyGridTable thead {
+          background: #FFFFFF;
+          border-bottom: 4px solid #333333;
+        }
+        table.greyGridTable thead th {
+          font-size: 15px;
+          font-weight: bold;
+          color: #333333;
+          text-align: center;
+          border-left: 2px solid #333333;
+        }
+        table.greyGridTable thead th:first-child {
+          border-left: none;
+        }
+
+        table.greyGridTable tfoot {
+          font-size: 14px;
+          font-weight: bold;
+          color: #333333;
+          border-top: 4px solid #333333;
+        }
+        table.greyGridTable tfoot td {
+          font-size: 14px;
+        }
+        table.greyGridTable tfoot .links {
+          text-align: right;
+        }
+        table.greyGridTable tfoot .links a{
+          display: inline-block;
+          background: #333333;
+          color: #FFFFFF;
+          padding: 2px 8px;
+          border-radius: 5px;
+        }
+      </style>
 
 
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
+      <script src="https://cdn3.vox-cdn.com/uploads/chorus_asset/file/7447791/sorttable.0.js"></script>
+      <table class="sortable greyGridTable" width="" border="" cellpadding="0" cellspacing="0">
+        <thead>
+          <tr>
+            <th align="center">Type</th>
+            <th align="center">Address</th>
+            <th align="center">Neighborhood</th>
+            <th align="center">Price</th>
+            <th align="center">Beds</th>
+            <th align="center">Baths</th>
+            <th align="center">SqFt</th>
+            <th align="center">Lot Size</th>
+            <th align="center">Days on Market</th>
+            <th align="center">HOA/Mo.</th>
+            <th align="center">URL</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in data %}  <!--start for loop over variable data-->
+            <tr>
+            	{% for col in row %} 
+              <td>{{col}}</td>
+              {% endfor %}
 
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#recipes-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{{ url_for('index') }}">Housing Recommender</a>
-        </div>
- 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="recipes-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li><a href="#">Seattle Data Example</a></li>
-            <li><a href="{{ url_for('favorites') }}">How to get favorites</a></li>
-            <li><a href="{{ url_for('recommendations') }}">Recommendations</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{ url_for('welcome') }}">Welcome!</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div><!-- /.container -->
-    </nav>
-    <style type="text/css">
-          table.greyGridTable {
-            border: 2px solid #FFFFFF;
-            width: 100%;
-            text-align: center;
-            border-collapse: collapse;
-          }
-          table.greyGridTable td, table.greyGridTable th {
-            border: 1px solid #FFFFFF;
-            padding: 3px 4px;
-          }
-          table.greyGridTable tbody td {
-            font-size: 13px;
-          }
-          table.greyGridTable td:nth-child(even) {
-            background: #EBEBEB;
-          }
-          table.greyGridTable thead {
-            background: #FFFFFF;
-            border-bottom: 4px solid #333333;
-          }
-          table.greyGridTable thead th {
-            font-size: 15px;
-            font-weight: bold;
-            color: #333333;
-            text-align: center;
-            border-left: 2px solid #333333;
-          }
-          table.greyGridTable thead th:first-child {
-            border-left: none;
-          }
-
-          table.greyGridTable tfoot {
-            font-size: 14px;
-            font-weight: bold;
-            color: #333333;
-            border-top: 4px solid #333333;
-          }
-          table.greyGridTable tfoot td {
-            font-size: 14px;
-          }
-          table.greyGridTable tfoot .links {
-            text-align: right;
-          }
-          table.greyGridTable tfoot .links a{
-            display: inline-block;
-            background: #333333;
-            color: #FFFFFF;
-            padding: 2px 8px;
-            border-radius: 5px;
-          }
-        </style>
-         <script src="https://cdn3.vox-cdn.com/uploads/chorus_asset/file/7447791/sorttable.0.js"></script>
-         <table class="sortable greyGridTable" width="" border="" cellpadding="0" cellspacing="0">
-        		<thead>
-              <tr>
-              <th align="center">Type</th>
-              <th align="center">Address</th>
-              <th align="center">Neighborhood</th>
-              <th align="center">Price</th>
-              <th align="center">Beds</th>
-              <th align="center">Baths</th>
-              <th align="center">SqFt</th>
-              <th align="center">Lot Size</th>
-              <th align="center">Days on Market</th>
-              <th align="center">HOA/Mo.</th>
-              <th align="center">URL</th>
-              </tr>
-          		</thead>
-          	<tbody>
-            {% for row in data %}  <!--start for loop over variable data-->
-              <tr>
-              	{% for col in row %} 
-                <td>{{col}}</td>
-                {% endfor %}
-
-              </tr>
-            {% endfor %}           <!-- end for loop -->
-        	</tbody>
-          </table>
-</div>
-</body>
+            </tr>
+          {% endfor %}           <!-- end for loop -->
+        </tbody>
+      </table>
+    </div>
+  </body>
 </html>
