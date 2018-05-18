@@ -15,27 +15,13 @@ from src.clustering import do_everything
 
 # from ec2.prophet_db import web_query
 
-UPLOAD_FOLDER = 'data/'
-ALLOWED_EXTENSIONS = set(['csv'])
-
-
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route('/recommendations', methods=['GET', 'POST'])
 def recommendations():
     return render_template('recommendations.html') 
 
-@app.route('/test', methods=['GET', 'POST'])
-def test():
-    return render_template('test.html') 
 
 @app.route('/uploadajax', methods=['POST'])
 def uploadajax():
@@ -56,10 +42,20 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/table')
+def table():
+    df = pd.read_csv('data/final_html.csv')
+    df.drop('Unnamed: 0', axis =1, inplace=True)
+    df.fillna(0, inplace=True)
+    list_of_vals = [list(df[i].values) for i in df]
+    columns = df.columns
+    return render_template('tabulator-table.html')
+
 @app.route('/uploaded_file', methods = ['GET', 'POST'])
 def uploaded_file():
     #for uploading file 
     return render_template('uploaded_file.html')
+
 
 
 @app.route('/welcome', methods=['GET', 'POST'])
@@ -77,18 +73,14 @@ def favorites():
 @app.route('/data', methods=['GET', 'POST'])
 def data():
     # Data page to show what the data looks like
-    df = pd.read_csv('data/data-for-html-1.csv')
+    df = pd.read_csv('data/final_html.csv')
     df.drop('Unnamed: 0', axis =1, inplace=True)
     df.fillna(0, inplace=True)
     list_of_vals = [list(df[i].values) for i in df]
     columns = df.columns
     return render_template('data.html', data=zip(*list_of_vals), columns=columns)
-    
-
-
-def main():
-    app.run(host='0.0.0.0', port=5000, debug=True)
 
 
 if __name__ == '__main__':
-    main()
+    app.run(host='0.0.0.0', port=5000, debug=True)
+
