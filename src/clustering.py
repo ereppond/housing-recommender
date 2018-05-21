@@ -156,7 +156,7 @@ def do_everything(file, orig_file='data/housing-data.csv'):
     for idx, row in recs.iterrows():
         recs.loc[idx, 'ADDRESS'] = f"{str(row['ADDRESS'])} {row['CITY']} {row['STATE']} {str(row['ZIP'])}"
         recs.loc[idx, 'PROPERTY TYPE'] = str(row['PROPERTY TYPE']) + ' ' + str(int(row['YEAR BUILT']))
-    recs = (recs[['Favorited House', 'Score', 'PROPERTY TYPE', 'ADDRESS', 'PRICE', 'BEDS', 'BATHS', 'LOCATION', 'SQUARE FEET', 'LOT SIZE', 'URL']])
+    recs = recs[['Favorited House', 'Score', 'PROPERTY TYPE', 'ADDRESS', 'PRICE', 'BEDS', 'BATHS', 'LOCATION', 'SQUARE FEET', 'LOT SIZE', 'URL']]
     for col in recs.columns:
         if np.issubdtype(recs[col].dtype, np.number):
             recs[col] = recs[col].apply(lambda x: round(x, 2))
