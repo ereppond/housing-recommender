@@ -145,7 +145,7 @@
         </thead>
         <tbody>
           {% for row in data %}  <!--start for loop over variable data-->
-            <tr>
+            <tr onMouseOver="this.bgColor='#C7D9EC'" onMouseOut="this.bgColor='#FFFFFF'">
             	{% for col in row %} 
               <td>{{col}}</td>
               {% endfor %}
