@@ -44,8 +44,7 @@ def data():
     df = pd.read_csv('data/final_html.csv')
     df.drop('Unnamed: 0', axis =1, inplace=True)
     df.fillna(0, inplace=True)
-    columns = df.columns
-    return render_template('data.html', data=df.values, columns=columns)
+    return render_template('data.html', data=df.values)
 
 @app.route('/favorites', methods=['GET', 'POST'])
 def favorites():
@@ -82,9 +81,7 @@ def uploadajax():
     file.save(f)
     f.seek(0)
     df = do_everything(f)  # returns pandas df with table to display 
-    list_of_vals = [list(df[i].values) for i in df]
-    columns = df.columns
-    return render_template('uploaded_file.html', data=zip(*list_of_vals), columns=columns)
+    return render_template('uploaded_file.html', data=df.values)
 
 
 @app.route('/uploaded_file', methods = ['GET', 'POST'])
