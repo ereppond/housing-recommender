@@ -15,7 +15,8 @@
             processData: false,
             async: false,
             success: function(data) {
-                $('div#result').html(data)
+                // $('div#result').html(data)
+                window.location.href = "uploaded_file.html"
                 console.log('Success!');
             },
           });

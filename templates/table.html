@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+ <head>
+    <script src="sorttable.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    function sortTable(columnName){
+        var newTableObject = document.getElementById("#tbl")
+        sorttable.makeSortable(newTableObject);
+         var sort = $("#sort").val();
+         $.ajax({
+          url:'/table',
+          type:'post',
+          data:{columnName:columnName,sort:sort},
+          success: function(response){
+         
+           $("#tbl tr:not(:first)").remove();
+         
+           $("#tbl").append(response);
+           if(sort == "asc"){
+             $("#sort").val("desc");
+           }else{
+             $("#sort").val("asc");
+           }
+         
+          }
+         });
+        }
+</script>
+<style>
+table.sortable thead {
+    background-color:#eee;
+    color:#666666;
+    font-weight: bold;
+    cursor: default;
+}
+</style>
+</head>
+ <title>Sorting the table by clicking header with AJAX</title>
+ <body>
+ <div class='container'>
+ <input type='hidden' id='sort' value='asc'>
+ <table class="sortable"width='100%' id='tbl' border='1' cellpadding='10'>
+  <thead>
+                        <th style="text-align: center; width:70%;"><span onclick='sortTable("Type");'>Property Type</span></th>
+                        <th style="text-align: center;"><span onclick='sortTable("Address");'>Address</span></th>
+                  <th style="text-align: center;">Location</th>                  
+                        <th style="text-align: center;">Price</th>
+                        <th style="text-align: center;">Beds</th>
+                        <th style="text-align: center;">Baths</th>
+                        <th style="text-align: center;">Sqft</th>
+                        <th style="text-align: center;">Lot Size</th>
+                        <th style="text-align: center;">Days on Market</th>
+                        <th style="text-align: center;">Price/Sqft</th>
+                        <th style="text-align: center;" width="70">URL</th>
+                      </tr>
+                </thead>
+  <tr>
+    <td>0</td>
+    <td>Townhouse</td>
+    <td>4228 156th St SW Unit 6D</td>
+    <td>Lynnwood</td>
+    <td>WA</td>
+    <td>98087</td>
+    <td>238900.0</td>
+    <td>2</td>
+    <td>1.5</td>
+    <td>Keeler's Corner</td>
+    <td>1100.0</td>
+    <td>84122.0</td>
+    <td>1977.0</td>
+    <td>4.0</td>
+    <td>217.0</td>
+    <td>257.0</td>
+    <td>http://www.redfin.com/WA/Lynnwood/4228-156th-St-SW-98087/unit-6D/home/2780480</td>
+    <td>A commuter's dream w/ this sought after end unit in Olympic View Terrace Condos. Highlights include energy efficient windows, storage unit w/ shelving, brand new plank living room flooring, &amp; peek-a-boo views of Olympic Mts from upstairs. Kitchen boasts ample counter space, plenty of storage, &amp; opens to balcony. Master offers ensuite bath &amp; opens to 2nd balcony. Also includes 2 assigned parking spaces out front of this mature tree lined property. Close to shopping &amp; easy access to 99, I-5, &amp; 405.</td>
+  </tr>
