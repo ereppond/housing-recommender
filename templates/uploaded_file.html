@@ -68,7 +68,7 @@
   </head>
  
   <body>
-  	<img src="{{url_for('static', filename='neighborhoods1.jpg')}}" style="width:100%; height:auto; margin:0 auto;"/>
+  	<img src="{{url_for('static', filename='neighborhoods.jpg')}}" style="width:100%; height:auto; margin:0 auto;"/>
 
     <!-- Static navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -98,35 +98,34 @@
         </div><!--/.nav-collapse -->
       </div><!-- /.container -->
     </nav>
-      <div style="text-align: center; width:auto">
-        <script src="https://cdn3.vox-cdn.com/uploads/chorus_asset/file/7447791/sorttable.0.js"></script>
-        <table class="greyGridTable sortable" width="" border="1" cellpadding="0" cellspacing="0">
-          <thead>
-            <tr>
-              <th style="text-align: center;">Favorited House</th>
-              <th style="text-align: center;">Similarity Score</th>
-              <th style="text-align: center; width:70%;">Property Type</th>
-              <th style="text-align: center;">Address</th>
-              <th style="text-align: center;">Price</th>
-              <th style="text-align: center;">Beds</th>
-              <th style="text-align: center;">Baths</th>
-              <th style="text-align: center;">Location</th>
-              <th style="text-align: center;">Sqft</th>
-              <th style="text-align: center;">Lot Size</th>
-              <th style="text-align: center; width:30%;">URL</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for col in data %}  <!--start for loop over variable data-->
-            <tr onMouseOver="this.bgColor='#C7D9EC'" onMouseOut="this.bgColor='#FFFFFF'">
-              {% for row in col %} 
-              <td>{{row}}</td>
-              {% endfor %}
+    <script src="https://cdn3.vox-cdn.com/uploads/chorus_asset/file/7447791/sorttable.0.js"></script>
+      <table class="greyGridTable sortable" width="" border="1" cellpadding="0" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Favorited House</th>
+            <th>Similarity Score</th>
+            <th>Property Type</th>
+            <th>Address</th>
+            <th>Price</th>
+            <th>Beds</th>
+            <th>Baths</th>
+            <th>Location</th>
+            <th>Sqft</th>
+            <th>Lot Size</th>
+            <th>URL</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for col in data %}  <!--start for loop over variable data-->
+          <tr onMouseOver="this.bgColor='#C7D9EC'" onMouseOut="this.bgColor='#FFFFFF'">
+            {% for row in col %} 
+            <td>{{row}}</td>
+            {% endfor %}
 
-            </tr>
-            {% endfor %}           <!-- end for loop -->
-          </tbody>
-        </table>
-      </div>
+          </tr>
+          {% endfor %}           <!-- end for loop -->
+        </tbody>
+      </table>
+    </div>
   </body>
 </html>
