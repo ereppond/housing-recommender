@@ -44,9 +44,8 @@ def data():
     df = pd.read_csv('data/final_html.csv')
     df.drop('Unnamed: 0', axis =1, inplace=True)
     df.fillna(0, inplace=True)
-    list_of_vals = [list(df[i].values) for i in df]
     columns = df.columns
-    return render_template('data.html', data=zip(*list_of_vals), columns=columns)
+    return render_template('data.html', data=df.values, columns=columns)
 
 @app.route('/favorites', methods=['GET', 'POST'])
 def favorites():
