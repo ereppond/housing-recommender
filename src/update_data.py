@@ -51,6 +51,7 @@ class Data_Update:
         directory = os.fsencode('/Users/elisereppond/Downloads')
         for file in os.listdir(directory):
             filename = os.fsdecode(file)
+            print(filename)
             month = now.month
             day = now.day
             if month <= 9:
@@ -84,7 +85,7 @@ class Data_Update:
             '$/SQUARE FEET': 'PRICE/SQUAREFT'})
         self.df_new_data.drop(self.df_new_data[self.df_new_data['STATE']
             != 'WA'].index, inplace=True)
-        self.df_new_data['PRICE'] = self.df_new_data['PRICE'].dropna(axis=0)
+        self.df_new_data = self.df_new_data.drop(self.df_new_data['PRICE'].isnull(), axis=0)
         self.df_new_data.drop_duplicates(inplace=True)
         for idx, row in self.df_new_data.iterrows():
             if row['PROPERTY TYPE'] == 'Vacant Land':
@@ -94,13 +95,11 @@ class Data_Update:
                     self.df_new_data.loc[idx, 'BATHS'] = 0
                     self.df_new_data.loc[idx, 'SQUARE FEET'] = 0
                     self.df_new_data.loc[idx, '$/SQUARE FEET'] = 0
-        self.df_new_data['LABEL'] = 0
-        df = df.apply(lambda x:  x.fillna(x.mean()) if np.issubdtype(x.dtype, 
+        self.df_new_data = self.df_new_data.apply(lambda x:  x.fillna(x.mean()) if np.issubdtype(x.dtype, 
             np.number) else x.fillna(0),axis=0)    
-        df['ID'] = df.reset_index(drop=True).index
-        '''***** note columns have been added such as ID
-            and label column needs to be removed once the 
-            original data has been altered'''
+        self.df_new_data.reset_index(inplace=True, drop=True)
+        self.df_new_data['ID'] = self.df_new_data.index
+        '''***** note columns have been added such as ID'''
 
 
     def compare_datasets(self):
@@ -144,9 +143,7 @@ class Data_Update:
     def replace_old_csv(self):
         ''' Replaces the old csv files with the updated ones.'''
 
-        self.df_new_data['LABEL'] = 0
         self.df_new_data['DESC'].fillna('No Description', inplace=True)
-
         if self.df_old_data.columns.sort() == self.df_new_data.columns.sort(): 
             self.df_old_data = pd.concat([self.df_old_data,
                 self.df_new_data]).drop_duplicates()
@@ -159,7 +156,7 @@ class Data_Update:
 
 if __name__ == '__main__':
     update = Data_Update('../data/housing-data.csv')
-    update.collect_new_data()
+    # update.collect_new_data()
     update.collecting_files()
     update.compare_datasets()
     update.scraping_desc()
