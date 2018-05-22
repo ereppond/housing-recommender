@@ -6,6 +6,22 @@ src/__pycache__/
 notebooks/
 src/__init__.py
 
+
+data/data-for-html.csv
+data/example_favorites.csv
+data/housing-data-new-test.csv
+static/awaits.pdf
+static/design-recommender.jpeg
+static/giphy.gif
+static/giphy_new.gif
+static/lovewhereyoulivecopy.jpeg
+static/mountain.jpeg
+static/seattle.gif
+static/seattle1.jpg
+static/seattlefall.jpg
+
+
+
 # C extensions
 *.so
 .DS_Store
