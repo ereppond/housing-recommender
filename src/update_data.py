@@ -21,6 +21,7 @@ class Data_Update:
         self.df_old_data = self.df_old_data.rename(columns=
             {'URL (SEE http://www.redfin.com/buy-a-home/comparative-\
             market-analysis FOR INFO ON PRICING)': 'URL'})
+        self.df_old_data.drop('Unnamed: 0', axis=1, inplace=True)
         self.df_new_data = pd.DataFrame()
 
 
@@ -156,7 +157,7 @@ class Data_Update:
 
 if __name__ == '__main__':
     update = Data_Update('../data/housing-data.csv')
-    # update.collect_new_data()
+    update.collect_new_data()
     update.collecting_files()
     update.compare_datasets()
     update.scraping_desc()
