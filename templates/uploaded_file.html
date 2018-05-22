@@ -68,7 +68,7 @@
   </head>
  
   <body>
-  	<img src="{{url_for('static', filename='neighborhoods1.jpg')}}" style="width:100%; height:auto; margin:0 auto;"/>
+  	<img src="{{url_for('static', filename='awaits.png')}}" style="width:100%; height:auto; margin:0 auto;"/>
 
     <!-- Static navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -87,13 +87,10 @@
  
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="recipes-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li><a href="{{ url_for('data') }}">Seattle Data Example</a></li>
-            <li><a href="{{ url_for('favorites') }}">How to get favorites</a></li>
-            <li><a href="{{ url_for('recommendations') }}">Recommendations</a></li>
-          </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{ url_for('welcome') }}">Welcome!</a></li>
+            <li><a href="{{ url_for('data') }}">Seattle Data Example</a></li>
+            <li><a href="{{ url_for('favorites') }}">How To</a></li>
+            <li><a href="{{ url_for('recommendations') }}">Recommendations</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div><!-- /.container -->
@@ -132,6 +129,9 @@
           {% endfor %}           <!-- end for loop -->
         </tbody>
       </table>
+      <br></br>
+      <br></br>
+      <br></br>
     </div>
   </body>
 </html>
