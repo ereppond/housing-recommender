@@ -147,7 +147,7 @@ def do_everything(file, orig_file='data/housing-data.csv'):
         house_id = yes['ADDRESS'][i]
         for rec in recs_:
             new_row = df[df['ID'] == rec[1]]
-            scores.append(round(rec[0], 3) - (np.random.random() / 2.5))
+            scores.append(round(rec[0] - (np.random.random() / 2.5), 2))
             houses.append(house_id)
             temp_df = pd.concat([temp_df, new_row], ignore_index=True)
     combination = pd.DataFrame([pd.Series(houses, name='Favorited House'), 
