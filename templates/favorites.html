@@ -34,7 +34,7 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="recipes-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Seattle Data Example</a></li>
+            <li><a href="#">Seattle Data</a></li>
             <li><a href="{{ url_for('favorites') }}">How To</a></li>
             <li><a href="{{ url_for('recommendations') }}">Recommendations</a></li>
           </ul>
@@ -82,5 +82,8 @@
   		  <img src="{{url_for('static', filename='step-4.png')}}" align="middle" style="width:70%; height:70%; margin:3 auto;"/>
       </p>
     </div>
+    <div>
+      <p style="text-align: center;"> <b class="whb"> <br> Go to the <a href="{{ url_for('recommendations') }}">recommender</a>, and upload your favorites file.</b>
+        <br></br>
   </body>
 </html>

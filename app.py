@@ -24,8 +24,6 @@ def index():
         index.html (html template): main page template
     '''
 
-    if request.method == 'POST':
-        return redirect(url_for('uploadajax'))
     return render_template('index.html')
 
 
@@ -99,15 +97,6 @@ def uploaded_file():
 def welcome():
     # Welcome page to explain what is going on in the site
     return render_template('welcome.html')
-
-# @app.route('/table')
-# def table():
-#     df = pd.read_csv('data/final_html.csv')
-#     df.drop('Unnamed: 0', axis =1, inplace=True)
-#     df.fillna(0, inplace=True)
-#     list_of_vals = [list(df[i].values) for i in df]
-#     columns = df.columns
-#     return render_template('tabulator-table.html')
 
 
 if __name__ == '__main__':
