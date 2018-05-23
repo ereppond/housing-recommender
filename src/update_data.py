@@ -145,14 +145,28 @@ class Data_Update:
         ''' Replaces the old csv files with the updated ones.'''
 
         self.df_new_data['DESC'].fillna('No Description', inplace=True)
-        if self.df_old_data.columns.sort() == self.df_new_data.columns.sort(): 
-            self.df_old_data = pd.concat([self.df_old_data,
-                self.df_new_data]).drop_duplicates()
-            print('concatinated old and new df')
-        else:
-            print('couldnt concatinate old and new df for exporting')
+        self.df_old_data = pd.concat([self.df_old_data,
+            self.df_new_data]).drop_duplicates()
         self.df_old_data.to_csv('../data/old_data.csv')
         self.df_new_data.to_csv('../data/housing-data-new-test.csv')
+    
+    def data_html_format(self):
+        ''''''
+
+        self.df_new_data.drop(self.df_new_data['PRICE'] == 0, axis=0, inplace=True)
+        self.df_new_data['BEDS'] = self.df_new_data['BEDS'].astype(int)
+        self.df_new_data['BATHS'] = self.df_new_data['BATHS'].apply(lambda x: str(x)[0:4] if str(x)[2] != '0' else int(x))
+        self.df_new_data['HOA/MONTH'] = self.df_new_data['HOA/MONTH'].apply(lambda x: str(x)[0:4])
+        html_data = df_new_data
+        for idx, row in html_data.iterrows():
+            html_data.loc[idx, 'ADDRESS'] = f"{str(row['ADDRESS'])} {row['CITY']} {row['STATE']} {str(row['ZIP'])}"
+            html_data.loc[idx, 'PROPERTY TYPE'] = str(row['PROPERTY TYPE']) + ' ' + str(int(row['YEAR BUILT']))
+        html_data = html_data[['PROPERTY TYPE', 'ADDRESS', 'LOCATION', 'PRICE', 'BEDS', 'BATHS', 'SQUARE FEET', 'LOT SIZE', 'DAYS ON MARKET', 'HOA/MONTH', 'URL']]
+        html_data.dropna(inplace=True)
+        html_data['DAYS ON MARKET'] = html_data['DAYS ON MARKET'].apply(lambda x: int(x))
+        html_data['SQUARE FEET'] = html_data['SQUARE FEET'].apply(lambda x: str(x)[0:3])
+        html_data['LOT SIZE'] = html_data['LOT SIZE'].apply(lambda x: int(x))
+        html_data.to_csv('../final_html.csv')
 
 
 if __name__ == '__main__':
@@ -162,4 +176,5 @@ if __name__ == '__main__':
     update.compare_datasets()
     update.scraping_desc()
     update.replace_old_csv()
+    update.data_html_format()
     print('DONE')
