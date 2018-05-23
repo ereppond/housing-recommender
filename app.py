@@ -41,8 +41,8 @@ def data():
 
     df = pd.read_csv('data/final_html.csv')
     df.drop('Unnamed: 0', axis =1, inplace=True)
-    df.fillna(0, inplace=True)
-    return render_template('data.html', data=df.values)
+    df.dropna(inplace=True)
+    return render_template('data.html', data=df.values.astype(str))
 
 @app.route('/favorites', methods=['GET', 'POST'])
 def favorites():
