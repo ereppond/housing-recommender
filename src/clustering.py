@@ -131,7 +131,6 @@ def do_everything(file, orig_file='data/housing-data.csv'):
     '''
 
     df = get_data(orig_file, file)
-    # build_user_matrix(df, file)
     model = Recommending()  
     tfidf = model.fit_transform(df.DESC.values, df)
     model.cosine_sim(tfidf, df)
