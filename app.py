@@ -78,8 +78,8 @@ def uploadajax():
     f = BytesIO()
     file.save(f)
     f.seek(0)
-    df = do_everything(f)
-    df = df.drop(df['PRICE'].isnull(), axis=0) # returns pandas df with table to display 
+    df = do_everything(f) # returns pandas df with table to display 
+    df = df.loc[~df['PRICE'].isnull(),:]
     return render_template('uploaded_file.html', data=df.values)
 
 
