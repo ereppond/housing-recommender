@@ -58,6 +58,9 @@
 ----
 ## Updates
 
+* May 25, 2018
+	* User friendly format corrected
+
 * May 18, 2018
 	* Pep8 Documentation fixed
 	* Clean code

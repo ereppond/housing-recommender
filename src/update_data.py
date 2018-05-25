@@ -41,7 +41,7 @@ class Data_Update:
             except:
                 pass
 
-    def collecting_files(self):
+    def collecting_files(self, downloads_directory):
         ''' Collects the files from the Downloads folder and adds 
         them to the dataframe.
         '''
@@ -49,7 +49,7 @@ class Data_Update:
         print('collecting files')
         now = datetime.now()
         list_of_files = []
-        directory = os.fsencode('/Users/elisereppond/Downloads')
+        directory = os.fsencode(download_directory)
         for file in os.listdir(directory):
             filename = os.fsdecode(file)
             print(filename)
@@ -61,8 +61,7 @@ class Data_Update:
                 day = '0{}'.format(day)
             if filename.startswith('redfin_{}-{}-{}'.format(now.year, 
                 month, day)):
-                list_of_files.append(pd.read_csv('/Users/elisereppond/Downloads/{}'.\
-                    format(filename)))
+                list_of_files.append(pd.read_csv('{}/{}'.format(downloads_directory, filename)))
         try: 
             self.df_new_data = pd.concat(list_of_files, axis=0)
             print('concatinated files')
@@ -151,7 +150,8 @@ class Data_Update:
         self.df_new_data.to_csv('../data/housing-data-new-test.csv')
     
     def data_html_format(self):
-        ''''''
+        '''
+        '''
 
         self.df_new_data.drop(self.df_new_data['PRICE'] == 0, axis=0, inplace=True)
         self.df_new_data['BEDS'] = self.df_new_data['BEDS'].astype(int)
@@ -172,7 +172,7 @@ class Data_Update:
 if __name__ == '__main__':
     update = Data_Update('../data/housing-data.csv')
     update.collect_new_data()
-    update.collecting_files()
+    update.collecting_files('/Users/elisereppond/Downloads') # need to use personal download directory
     update.compare_datasets()
     update.scraping_desc()
     update.replace_old_csv()
