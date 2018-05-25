@@ -97,3 +97,9 @@
 ----
 ### References:
 See [Redfin](redfin.com) for reference to the data.
+
+
+### Cloning the Repo
+> Once you clone the repo, it is important to update the data before using the python files 
+
+
