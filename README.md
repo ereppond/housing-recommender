@@ -40,6 +40,29 @@
 * Number of bedrooms 
 * Year house was built (scaled)
 
+
+------
+
+## Once you've cloned  the repo
+After you have cloned the repo, you can use this code by doing the following:
+
+1. Imports used in the code:
+	* pandas
+	* numpy
+	* datetime
+	* sklearn
+	* os
+	* time
+	* random
+	* selenium
+	* flask
+	* io
+
+2. You should update the housing data by running 
+``` python update_data.py <your_downloads_directory_path>```
+
+3. Once update_data is FINISHED running you can then run ``` python app.py ``` to see the website on your local computer
+
 ------
 
 ### Hopes for future of model
