@@ -9,7 +9,8 @@ from datetime import datetime
 
 class Data_Update:
 
-    def __init__(self, old_data='../data/housing-data.csv'):
+    def __init__(self, old_data='../data/housing-data.csv', dl_folder=
+        '/Users/elisereppond/Downloads'):
         '''Initializes the class's parameters.
 
         Params:
@@ -24,6 +25,7 @@ class Data_Update:
             market-analysis FOR INFO ON PRICING)': 'URL'})
         self.df_old_data.drop('Unnamed: 0', axis=1, inplace=True)
         self.df_new_data = pd.DataFrame()
+        self.dl_folder = dl_folder
 
     def collect_new_data(self):
         '''Calls the webscraper that downloads necessary datasets.
@@ -41,19 +43,15 @@ class Data_Update:
             except:
                 pass
 
-    def collecting_files(self, downloads_directory):
+    def collecting_files(self):
         ''' Collects the files from the Downloads folder and adds them to the 
             dataframe.
-
-        Params:
-            downloads_directory (folder): ocation where downloads are sent on 
-                local computer
         '''
 
         print('collecting files')
         now = datetime.now()
         list_of_files = []
-        directory = os.fsencode(download_directory)
+        directory = os.fsencode(self.dl_folder)
         for file in os.listdir(directory):
             filename = os.fsdecode(file)
             print(filename)
@@ -65,7 +63,7 @@ class Data_Update:
                 day = '0{}'.format(day)
             if filename.startswith('redfin_{}-{}-{}'.format(now.year, 
                 month, day)):
-                list_of_files.append(pd.read_csv('{}/{}'.format(downloads_directory, filename)))
+                list_of_files.append(pd.read_csv('{}/{}'.format(self.dl_folder, filename)))
         try: 
             self.df_new_data = pd.concat(list_of_files, axis=0)
             print('concatinated files')
@@ -154,7 +152,8 @@ class Data_Update:
         self.df_new_data.to_csv('../data/housing-data-new-test.csv')
     
     def data_html_format(self):
-        '''
+        ''' Puts the data into a format that looks nice on the website
+            Note: at the end of this function it exports the new data into a file called final_html.csv in the data folder
         '''
 
         self.df_new_data.drop(self.df_new_data['PRICE'] == 0, axis=0, inplace=True)
@@ -176,7 +175,7 @@ class Data_Update:
 if __name__ == '__main__':
     update = Data_Update('../data/housing-data.csv')
     update.collect_new_data()
-    update.collecting_files('/Users/elisereppond/Downloads') # need to use personal download directory
+    update.collecting_files() # need to use personal download directory
     update.compare_datasets()
     update.scraping_desc()
     update.replace_old_csv()

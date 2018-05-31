@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 from datetime import datetime
-from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 # from users import build_user_matrix
@@ -27,7 +26,7 @@ class Recommending:
         self.tfidf.fit(X)
         desc_tfidf = self.tfidf.transform(X)
         tfidf_matrix = pd.concat([pd.DataFrame(desc_tfidf.todense()),
-                          df['PRICE'] / 1000, df['BEDS'], 
+                          df['PRICE'] / 2000, df['BEDS'], 
                           df['YEAR BUILT'] / 100], axis=1)
         return tfidf_matrix
 
@@ -85,7 +84,6 @@ def get_data(file, fave_file=None):
 
     Params:
         file (csv): file in csv format
-
     Returns:
         df (DataFrame): pandas dataframe of data from file
     '''
@@ -165,9 +163,3 @@ def do_everything(file, orig_file='data/housing-data.csv'):
 if __name__ == '__main__':
     recs = do_everything('../data/favorites_test.csv', '../data/housing-data.csv')
     print(recs)
-    # df = get_data('../data/housing-data.csv', '../data/favorites_test.csv')
-    # recs = Recommending()
-    # tfidf = recs.fit_transform(df.DESC.values, df)
-    # recs.cosine_sim(tfidf, df)
-    # recs.recommend(0, 2)
-    # df = recs.result(df)
