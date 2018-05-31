@@ -18,22 +18,6 @@
 
 ----
 
-## Features of the data:
-* zip-code: zip code of the house
-* bedrooms: number of bedrooms in the house
-* bathrooms: number of bathrooms in the house
-* square footage: total square footage of the house
-* date: date inquiry 
-* year built: the year the house was built
-* floors: number of floors in the house
-* price: the price of the house for sale
-* property type: townhouse, condo, home, etc
-* location: the neighborhood of the house
-* lot-size: size of the lot in acres
-* days-on-market: number of days the house has been on the market
-
-----
-
 ## Features of the recommender system:
 * Tfidf Vectorizer
 * Price (scaled)
@@ -43,7 +27,7 @@
 
 ------
 
-## Once you've cloned  the repo
+## Cloning the repo
 After you have cloned the repo, you can use this code by doing the following:
 
 1. Imports used in the code:
@@ -60,8 +44,10 @@ After you have cloned the repo, you can use this code by doing the following:
 
 2. You should update the housing data by running 
 ``` python update_data.py <your_downloads_directory_path>```
+Note: This will take a while to run
 
 3. Once update_data is FINISHED running you can then run ``` python app.py ``` to see the website on your local computer
+
 
 ------
 
