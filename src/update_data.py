@@ -9,12 +9,13 @@ from datetime import datetime
 
 class Data_Update:
 
-    def __init__(self, old_data):
-        '''Initializes the self parameters.
+    def __init__(self, old_data='../data/housing-data.csv'):
+        '''Initializes the class's parameters.
 
         Params:
             old_data (filename): name of csv file for old data
-            new_data (filename): name of csv file for new data
+            dl_folder (folder): location where downloads are sent on local 
+                computer
         '''
 
         self.df_old_data = pd.read_csv(old_data)
@@ -23,7 +24,6 @@ class Data_Update:
             market-analysis FOR INFO ON PRICING)': 'URL'})
         self.df_old_data.drop('Unnamed: 0', axis=1, inplace=True)
         self.df_new_data = pd.DataFrame()
-
 
     def collect_new_data(self):
         '''Calls the webscraper that downloads necessary datasets.
@@ -42,8 +42,12 @@ class Data_Update:
                 pass
 
     def collecting_files(self, downloads_directory):
-        ''' Collects the files from the Downloads folder and adds 
-        them to the dataframe.
+        ''' Collects the files from the Downloads folder and adds them to the 
+            dataframe.
+
+        Params:
+            downloads_directory (folder): ocation where downloads are sent on 
+                local computer
         '''
 
         print('collecting files')
