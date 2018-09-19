@@ -160,7 +160,7 @@ class Data_Update:
         self.df_new_data['BEDS'] = self.df_new_data['BEDS'].astype(int)
         self.df_new_data['BATHS'] = self.df_new_data['BATHS'].apply(lambda x: str(x)[0:4] if str(x)[2] != '0' else int(x))
         self.df_new_data['HOA/MONTH'] = self.df_new_data['HOA/MONTH'].apply(lambda x: str(x)[0:4])
-        html_data = df_new_data
+        html_data = self.df_new_data.copy()
         for idx, row in html_data.iterrows():
             html_data.loc[idx, 'ADDRESS'] = f"{str(row['ADDRESS'])} {row['CITY']} {row['STATE']} {str(row['ZIP'])}"
             html_data.loc[idx, 'PROPERTY TYPE'] = str(row['PROPERTY TYPE']) + ' ' + str(int(row['YEAR BUILT']))
